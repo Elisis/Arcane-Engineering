@@ -1,0 +1,66 @@
+# Items
+item.ArcaneEngineering.drillhead.thaumium.name=Thaumium Drill Head
+item.ArcaneEngineering.drillhead.void.name=Void Drill Head
+item.ArcaneEngineering.impulse_boots.name=Impulse Boots
+item.ArcaneEngineering.wandupgrade.capacitor.name=Vis Capacitor
+item.ArcaneEngineering.wandupgrade.charger.name=Crystalline Charger
+item.ArcaneEngineering.wandupgrade.energizer.name=Focus Energizer
+item.ArcaneEngineering.wandcap.electrum.name=Electrum Wand Cap
+item.ArcaneEngineering.wandcap.steel.name=Steel Wand Cap
+
+
+# Tiles
+tile.ArcaneEngineering.destabilizer.name=Node Destabilizer
+
+# Research
+tc.research_category.ARCANEENGINEERING=Arcane Engineering
+# Formatting:
+# §l 	Bold
+# §m 	Strikethrough
+# §n 	Underline
+# §o 	Italic
+# §r 	Reset
+# <BR>  LineBreak
+# <LINE>Fancy LineBreak
+ArcaneEngineering.research_name.MAGITECH=Magical Technology
+ArcaneEngineering.research_text.MAGITECH="Any sufficiently analyzed magic is indistinguishable from science!"
+ArcaneEngineering.research_page.MAGITECH.1=No matter how much you research, sometimes technology can achieve things that would be impossible with pure magic. Combining thaumaturgy and technology could provide the best of both worlds, and grant  unparalleled power, which might be why it is considered taboo by other thaumaturges.
+ArcaneEngineering.research_name.NODEDESTABILIZER=Node Destabilizer
+ArcaneEngineering.research_text.NODEDESTABILIZER=You're Making Me Hungry…
+ArcaneEngineering.research_page.NODEDESTABILIZER=After studying the Node Destabilizer, you wondered how else you could affect nodes. After some tinkering, you've created the Node Destabilizer, which consumes RF to turn nodes above it hungry.<BR>The power input is at the bottom, and it should be placed directly below a node.
+ArcaneEngineering.research_name.DRILLTHAUMIUM=Thaumium Drill Head
+ArcaneEngineering.research_text.DRILLTHAUMIUM=Like an iron one, but more magical
+ArcaneEngineering.research_page.DRILLTHAUMIUM=After discovering the strength of the thaumium pickaxe, you decided to try to use thaumium in a more advanced digging tool. You ended up with the thaumium drill head, whose stats are between those of iron and steel drill heads.
+ArcaneEngineering.research_name.DRILLVOID=Void Drill Head
+ArcaneEngineering.research_text.DRILLVOID=Hole-ier
+ArcaneEngineering.research_page.DRILLVOID=Infusing an iron drill head with void seeds and void metal yields a void drill head. This drill head is takes other void tools' repair abilities a step further, and is completely immune to damage. It's stats are slightly better than steel.
+ArcaneEngineering.research_name.ROD_upgradeable=Treated Wood Wand Core
+ArcaneEngineering.research_text.ROD_upgradeable="You will be upgraded"
+ArcaneEngineering.research_page.ROD_upgradeable=Wood treated with creosote oil is stronger and more useful in engineering. It is unsurprisingly also better at storing vis than mundane wood, offering a base of 30 vis storage. The main draw of treated wood wand cores is not their storage, though. When placed in an engineer's workbench, wands with treated wood sticks at their core can be given up to two upgrades that can make the wand competitive with even the best non-upgradeable wands and staffs. You are sure that the number of upgrade slots can be increased somehow, but first you should research upgrades for the wand.
+ArcaneEngineering.research_name.CAP_steel=Steel Wand Caps
+ArcaneEngineering.research_text.CAP_steel=Not Blue Steel
+ArcaneEngineering.research_page.CAP_steel=If iron can be used for wand caps, why not steel? Steel is inherently more orderly than iron, so caps made from it take no penalty when used to channel vis. If used to cap a treated wood wand, they will also grant it two extra upgrade slots.
+ArcaneEngineering.research_name.CAP_electrum=Electrum Wand Caps
+ArcaneEngineering.research_text.CAP_electrum=For the indecisive thaumaturge
+ArcaneEngineering.research_page.CAP_electrum=There are so many metals that you can make wand caps out of. Too many, in fact, for some thaumaturges. If you can't decide between silver and gold, why not use electrum? Or if you can't decide if you want more upgrade slots or a vis discount, just use electrum. It offers a 95% vis discount and adds an additional upgrade slot to treated wood wands.
+ArcaneEngineering.research_name.CAPACITOR=Vis Capacitor
+ArcaneEngineering.research_text.CAPACITOR=Can vis get claustrophobic?
+ArcaneEngineering.research_page.CAPACITOR=You have always suspected that wisps and nodes weren't really that different. While researching the connection, you found that you can store vis in wisp essence, a discovery which led you to make the vis capacitor: a wand upgrade that increases the vis storage of the wand. It can be applied to treated wood wands in an engineer's workbench. The effect stacks with multiple upgrades.
+ArcaneEngineering.research_name.CHARGER=Crystalline Charger
+ArcaneEngineering.research_text.CHARGER="CHAAAAAARGE!"
+ArcaneEngineering.research_page.CHARGER=Cystal shards have a strong connection to the aura. Ancient thaumaturges discovered that the crystals could even drain vis from the aura to grow in size. Using the aura-draining properties of a primal crystal shard, you've created a wand upgrade that drains vis from the aura instead of nodes. The upgrade can be applied to treated wood wands in an engineer's workbench. The effect stacks with multiple upgrades.
+ArcaneEngineering.research_name.ENERGIZER=Focus Energizer
+ArcaneEngineering.research_text.ENERGIZER=Bunny not included
+ArcaneEngineering.research_page.ENERGIZER=After studying the primordial pearl, you've learned quite a bit about primal energy. Applying this knowledge to the primal charm, you've invented a wand upgrade that applies a level of potency to any focus used. The upgrade can be applied to treated wood wands in an engineer's workbench.
+ArcaneEngineering.research_name.IMPULSEBOOTS=Impulse Boots
+ArcaneEngineering.research_text.IMPULSEBOOTS=An accident waiting to happen
+ArcaneEngineering.research_page.IMPULSEBOOTS=Biodiesel is a very efficient fuel, with many undiscovered uses and applications. One application that's been discovered already, though, is as a rocket propellant in impulse boots. The boots consume biodiesel to propel you upwards when you hold the jump key, and sneaking while holding the jump key lets you hover. The sprint key can be used for speedier air travel. The boots can reduce fall damage if you slow your descent enough before landing.
+
+
+#Wand
+item.Wand.upgradeable.rod=Treated Wood
+item.Wand.steel.cap=Steel Tipped
+item.Wand.electrum.cap=Electrum Garnished
+
+# Creative
+itemGroup.arcaneengineering=Arcane Engineering

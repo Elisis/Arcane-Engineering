@@ -15,8 +15,8 @@ public class FallDamageMessage implements IMessage
     public static class Handler implements IMessageHandler<FallDamageMessage, IMessage>
     {
         public IMessage onMessage(final FallDamageMessage message, final MessageContext ctx) {
-            final EntityPlayer player = (EntityPlayer)ctx.getServerHandler().field_147369_b;
-            player.field_70143_R = 0.0f;
+            final EntityPlayer player = (EntityPlayer)ctx.getServerHandler().playerEntity;
+            player.fallDistance = 0.0f;
             return null;
         }
     }

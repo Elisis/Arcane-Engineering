@@ -29,12 +29,12 @@ public class ShapelessArcaneRecipe implements IArcaneRecipe
         this.output = null;
         this.input = new ArrayList();
         this.aspects = null;
-        this.output = result.func_77946_l();
+        this.output = result.copy();
         this.research = research;
         this.aspects = aspects;
         for (final Object in : recipe) {
             if (in instanceof ItemStack) {
-                this.input.add(((ItemStack)in).func_77946_l());
+                this.input.add(((ItemStack)in).copy());
             }
             else if (in instanceof Item) {
                 this.input.add(new ItemStack((Item)in));
@@ -68,17 +68,17 @@ public class ShapelessArcaneRecipe implements IArcaneRecipe
     
     @Override
     public ItemStack getCraftingResult(final IInventory var1) {
-        return this.output.func_77946_l();
+        return this.output.copy();
     }
     
     @Override
     public boolean matches(final IInventory var1, final World world, final EntityPlayer player) {
-        if (this.research.length() > 0 && !ThaumcraftApiHelper.isResearchComplete(player.func_70005_c_(), this.research)) {
+        if (this.research.length() > 0 && !ThaumcraftApiHelper.isResearchComplete(player.getCommandSenderName(), this.research)) {
             return false;
         }
         final ArrayList required = new ArrayList(this.input);
         for (int x = 0; x < 9; ++x) {
-            final ItemStack slot = var1.func_70301_a(x);
+            final ItemStack slot = var1.getStackInSlot(x);
             if (slot != null) {
                 boolean inRecipe = false;
                 final Iterator req = required.iterator();
@@ -108,7 +108,7 @@ public class ShapelessArcaneRecipe implements IArcaneRecipe
     }
     
     private boolean checkItemEquals(final ItemStack target, final ItemStack input) {
-        return (input != null || target == null) && (input == null || target != null) && target.func_77973_b() == input.func_77973_b() && (!target.func_77942_o() || ThaumcraftApiHelper.areItemStackTagsEqualForCrafting(input, target)) && (target.func_77960_j() == 32767 || target.func_77960_j() == input.func_77960_j());
+        return (input != null || target == null) && (input == null || target != null) && target.getItem() == input.getItem() && (!target.hasTagCompound() || ThaumcraftApiHelper.areItemStackTagsEqualForCrafting(input, target)) && (target.getMetadata() == 32767 || target.getMetadata() == input.getMetadata());
     }
     
     public ArrayList getInput() {

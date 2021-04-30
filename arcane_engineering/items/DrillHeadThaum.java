@@ -30,38 +30,38 @@ public class DrillHeadThaum extends AEItem implements IDrillHead
     }
     
     private DrillHeadPerm getHeadPerm(final ItemStack stack) {
-        if (stack.func_77960_j() >= 0 && stack.func_77960_j() < this.perms.length) {
-            return this.perms[stack.func_77960_j()];
+        if (stack.getMetadata() >= 0 && stack.getMetadata() < this.perms.length) {
+            return this.perms[stack.getMetadata()];
         }
         return new DrillHeadPerm("", 0, 0, 0, 0.0f, 0, 0, "immersiveengineering:textures/models/drill_diesel.png");
     }
     
     @SideOnly(Side.CLIENT)
     @Override
-    public void func_94581_a(final IIconRegister ir) {
-        super.func_94581_a(ir);
+    public void registerIcons(final IIconRegister ir) {
+        super.registerIcons(ir);
         for (final DrillHeadPerm p : this.perms) {
-            p.icon = ir.func_94245_a(p.texture);
+            p.icon = ir.registerIcon(p.texture);
         }
     }
     
-    public void func_77624_a(final ItemStack stack, final EntityPlayer player, final List list, final boolean adv) {
-        if (stack.func_77960_j() < this.getSubNames().length) {
-            list.add(StatCollector.func_74837_a("desc.ImmersiveEngineering.flavour.drillhead.size", new Object[] { this.getMiningSize(stack), this.getMiningDepth(stack) }));
-            list.add(StatCollector.func_74837_a("desc.ImmersiveEngineering.flavour.drillhead.level", new Object[] { Utils.getHarvestLevelName(this.getMiningLevel(stack)) }));
-            list.add(StatCollector.func_74837_a("desc.ImmersiveEngineering.flavour.drillhead.speed", new Object[] { Utils.formatDouble((double)this.getMiningSpeed(stack), "0.###") }));
-            list.add(StatCollector.func_74837_a("desc.ImmersiveEngineering.flavour.drillhead.damage", new Object[] { Utils.formatDouble((double)this.getAttackDamage(stack), "0.###") }));
+    public void addInformation(final ItemStack stack, final EntityPlayer player, final List list, final boolean adv) {
+        if (stack.getMetadata() < this.getSubNames().length) {
+            list.add(StatCollector.translateToLocalFormatted("desc.ImmersiveEngineering.flavour.drillhead.size", new Object[] { this.getMiningSize(stack), this.getMiningDepth(stack) }));
+            list.add(StatCollector.translateToLocalFormatted("desc.ImmersiveEngineering.flavour.drillhead.level", new Object[] { Utils.getHarvestLevelName(this.getMiningLevel(stack)) }));
+            list.add(StatCollector.translateToLocalFormatted("desc.ImmersiveEngineering.flavour.drillhead.speed", new Object[] { Utils.formatDouble((double)this.getMiningSpeed(stack), "0.###") }));
+            list.add(StatCollector.translateToLocalFormatted("desc.ImmersiveEngineering.flavour.drillhead.damage", new Object[] { Utils.formatDouble((double)this.getAttackDamage(stack), "0.###") }));
             final int maxDmg = this.getMaximumHeadDamage(stack);
             final int dmg = maxDmg - this.getHeadDamage(stack);
             final float quote = dmg / (float)maxDmg;
             final String status = "" + ((quote < 0.1) ? EnumChatFormatting.RED : ((quote < 0.3) ? EnumChatFormatting.GOLD : ((quote < 0.6) ? EnumChatFormatting.YELLOW : EnumChatFormatting.GREEN)));
             final String s = status + (this.getMaximumHeadDamage(stack) - this.getHeadDamage(stack)) + "/" + this.getMaximumHeadDamage(stack);
-            list.add(StatCollector.func_74837_a("desc.ImmersiveEngineering.info.durability", new Object[] { s }));
+            list.add(StatCollector.translateToLocalFormatted("desc.ImmersiveEngineering.info.durability", new Object[] { s }));
         }
     }
     
     @Override
-    public void func_150895_a(final Item item, final CreativeTabs tab, final List list) {
+    public void getSubItems(final Item item, final CreativeTabs tab, final List list) {
         for (int i = 0; i < this.getSubNames().length; ++i) {
             final ItemStack s = new ItemStack((Item)this, 1, i);
             if (!OreDictionary.getOres(this.getHeadPerm(s).repairMaterial).isEmpty()) {
@@ -70,7 +70,7 @@ public class DrillHeadThaum extends AEItem implements IDrillHead
         }
     }
     
-    public boolean func_82789_a(final ItemStack stack, final ItemStack material) {
+    public boolean getIsRepairable(final ItemStack stack, final ItemStack material) {
         return Utils.compareToOreName(material, this.getHeadPerm(stack).repairMaterial);
     }
     
@@ -110,7 +110,7 @@ public class DrillHeadThaum extends AEItem implements IDrillHead
     }
     
     public void damageHead(final ItemStack head, final int dmg) {
-        if (head.func_77960_j() != 1) {
+        if (head.getMetadata() != 1) {
             ItemNBTHelper.setInt(head, "headDamage", ItemNBTHelper.getInt(head, "headDamage") + dmg);
         }
     }

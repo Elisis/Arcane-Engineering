@@ -175,11 +175,11 @@ public class ResearchItem
     }
     
     public String getName() {
-        return StatCollector.func_74838_a("tc.research_name." + this.key);
+        return StatCollector.translateToLocal("tc.research_name." + this.key);
     }
     
     public String getText() {
-        return StatCollector.func_74838_a("tc.research_text." + this.key);
+        return StatCollector.translateToLocal("tc.research_text." + this.key);
     }
     
     public boolean isSpecial() {

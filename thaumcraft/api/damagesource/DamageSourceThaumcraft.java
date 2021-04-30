@@ -36,9 +36,9 @@ public class DamageSourceThaumcraft extends DamageSource
     }
     
     static {
-        DamageSourceThaumcraft.taint = new DamageSourceThaumcraft("taint").func_76348_h().func_82726_p();
+        DamageSourceThaumcraft.taint = new DamageSourceThaumcraft("taint").setDamageBypassesArmor().setMagicDamage();
         DamageSourceThaumcraft.tentacle = new DamageSourceThaumcraft("tentacle");
         DamageSourceThaumcraft.swarm = new DamageSourceThaumcraft("swarm");
-        DamageSourceThaumcraft.dissolve = new DamageSourceThaumcraft("dissolve").func_76348_h();
+        DamageSourceThaumcraft.dissolve = new DamageSourceThaumcraft("dissolve").setDamageBypassesArmor();
     }
 }

@@ -24,26 +24,26 @@ public class ItemWandUpgradeable extends ItemWandCasting implements IInternalSto
     String upgradeType;
     
     public ItemWandUpgradeable() {
-        this.func_77637_a(ArcaneEngineering.tabArcaneEngineering);
-        this.func_77655_b("ArcaneEngineering.wand_upgradeable");
+        this.setCreativeTab(ArcaneEngineering.tabArcaneEngineering);
+        this.setUnlocalizedName("ArcaneEngineering.wand_upgradeable");
         GameRegistry.registerItem((Item)this, "wand_upgradeable");
         this.upgradeType = "WAND";
     }
     
     @SideOnly(Side.CLIENT)
-    public void func_150895_a(final Item par1, final CreativeTabs par2CreativeTabs, final List par3List) {
+    public void getSubItems(final Item par1, final CreativeTabs par2CreativeTabs, final List par3List) {
         final ItemStack w1 = new ItemStack((Item)this, 1, 0);
         final ItemStack w2 = new ItemStack((Item)this, 1, 10);
         final ItemStack w3 = new ItemStack((Item)this, 1, 8);
-        ((ItemWandCasting)w1.func_77973_b()).setRod(w1, AEContent.WAND_ROD_UPGRADEABLE);
-        ((ItemWandCasting)w2.func_77973_b()).setCap(w2, AEContent.WAND_CAP_ELECTRUM);
-        ((ItemWandCasting)w2.func_77973_b()).setRod(w2, AEContent.WAND_ROD_UPGRADEABLE);
-        ((ItemWandCasting)w3.func_77973_b()).setCap(w3, AEContent.WAND_CAP_STEEL);
-        ((ItemWandCasting)w3.func_77973_b()).setRod(w3, AEContent.WAND_ROD_UPGRADEABLE);
+        ((ItemWandCasting)w1.getItem()).setRod(w1, AEContent.WAND_ROD_UPGRADEABLE);
+        ((ItemWandCasting)w2.getItem()).setCap(w2, AEContent.WAND_CAP_ELECTRUM);
+        ((ItemWandCasting)w2.getItem()).setRod(w2, AEContent.WAND_ROD_UPGRADEABLE);
+        ((ItemWandCasting)w3.getItem()).setCap(w3, AEContent.WAND_CAP_STEEL);
+        ((ItemWandCasting)w3.getItem()).setRod(w3, AEContent.WAND_ROD_UPGRADEABLE);
         for (final Aspect aspect : Aspect.getPrimalAspects()) {
-            ((ItemWandUpgradeable)w1.func_77973_b()).addVis(w1, aspect, ((ItemWandCasting)w1.func_77973_b()).getMaxVis(w1), true);
-            ((ItemWandUpgradeable)w2.func_77973_b()).addVis(w2, aspect, ((ItemWandCasting)w2.func_77973_b()).getMaxVis(w2), true);
-            ((ItemWandUpgradeable)w3.func_77973_b()).addVis(w3, aspect, ((ItemWandCasting)w3.func_77973_b()).getMaxVis(w3), true);
+            ((ItemWandUpgradeable)w1.getItem()).addVis(w1, aspect, ((ItemWandCasting)w1.getItem()).getMaxVis(w1), true);
+            ((ItemWandUpgradeable)w2.getItem()).addVis(w2, aspect, ((ItemWandCasting)w2.getItem()).getMaxVis(w2), true);
+            ((ItemWandUpgradeable)w3.getItem()).addVis(w3, aspect, ((ItemWandCasting)w3.getItem()).getMaxVis(w3), true);
         }
         par3List.add(w1);
         par3List.add(w2);
@@ -54,15 +54,15 @@ public class ItemWandUpgradeable extends ItemWandCasting implements IInternalSto
         return AEContent.WAND_ROD_UPGRADEABLE;
     }
     
-    public String func_77653_i(final ItemStack is) {
-        String name = StatCollector.func_74838_a("item.Wand.name");
-        name = name.replace("%CAP", StatCollector.func_74838_a("item.Wand." + this.getCap(is).getTag() + ".cap"));
+    public String getItemStackDisplayName(final ItemStack is) {
+        String name = StatCollector.translateToLocal("item.Wand.name");
+        name = name.replace("%CAP", StatCollector.translateToLocal("item.Wand." + this.getCap(is).getTag() + ".cap"));
         String rod = this.getRod(is).getTag();
         if (rod.indexOf("_staff") >= 0) {
             rod = rod.substring(0, this.getRod(is).getTag().indexOf("_staff"));
         }
-        name = name.replace("%ROD", StatCollector.func_74838_a("item.Wand." + rod + ".rod"));
-        name = name.replace("%OBJ", this.isStaff(is) ? StatCollector.func_74838_a("item.Wand.staff.obj") : (this.isSceptre(is) ? StatCollector.func_74838_a("item.Wand.sceptre.obj") : StatCollector.func_74838_a("item.Wand.wand.obj")));
+        name = name.replace("%ROD", StatCollector.translateToLocal("item.Wand." + rod + ".rod"));
+        name = name.replace("%OBJ", this.isStaff(is) ? StatCollector.translateToLocal("item.Wand.staff.obj") : (this.isSceptre(is) ? StatCollector.translateToLocal("item.Wand.sceptre.obj") : StatCollector.translateToLocal("item.Wand.wand.obj")));
         return name;
     }
     
@@ -112,48 +112,48 @@ public class ItemWandUpgradeable extends ItemWandCasting implements IInternalSto
         final HashMap<String, Object> map = new HashMap<String, Object>();
         for (int i = 0; i < inv.length; ++i) {
             final ItemStack u = inv[i];
-            if (u != null && u.func_77973_b() instanceof IUpgrade) {
-                final IUpgrade upg = (IUpgrade)u.func_77973_b();
+            if (u != null && u.getItem() instanceof IUpgrade) {
+                final IUpgrade upg = (IUpgrade)u.getItem();
                 if (upg.getUpgradeTypes(u).contains(this.upgradeType) && upg.canApplyUpgrades(stack, u)) {
                     upg.applyUpgrades(stack, u, (HashMap)map);
                 }
             }
         }
-        final NBTTagCompound upgradeTag = (NBTTagCompound)this.getUpgradeBase(stack).func_74737_b();
+        final NBTTagCompound upgradeTag = (NBTTagCompound)this.getUpgradeBase(stack).copy();
         for (final String key : map.keySet()) {
             final Object o = map.get(key);
             if (o instanceof Byte) {
-                upgradeTag.func_74774_a(key, (byte)o);
+                upgradeTag.setByte(key, (byte)o);
             }
             else if (o instanceof byte[]) {
-                upgradeTag.func_74773_a(key, (byte[])o);
+                upgradeTag.setByteArray(key, (byte[])o);
             }
             else if (o instanceof Boolean) {
-                upgradeTag.func_74757_a(key, (boolean)o);
+                upgradeTag.setBoolean(key, (boolean)o);
             }
             else if (o instanceof Integer) {
-                upgradeTag.func_74768_a(key, (int)o);
+                upgradeTag.setInteger(key, (int)o);
             }
             else if (o instanceof int[]) {
-                upgradeTag.func_74783_a(key, (int[])o);
+                upgradeTag.setIntArray(key, (int[])o);
             }
             else if (o instanceof Float) {
-                upgradeTag.func_74776_a(key, (float)o);
+                upgradeTag.setFloat(key, (float)o);
             }
             else if (o instanceof Double) {
-                upgradeTag.func_74780_a(key, (double)o);
+                upgradeTag.setDouble(key, (double)o);
             }
             else {
                 if (!(o instanceof String)) {
                     continue;
                 }
-                upgradeTag.func_74778_a(key, (String)o);
+                upgradeTag.setString(key, (String)o);
             }
         }
         ItemNBTHelper.setTagCompound(stack, "upgrades", upgradeTag);
         for (final Aspect aspect : Aspect.getPrimalAspects()) {
             if (this.getVis(stack, aspect) > this.getMaxVis(stack)) {
-                this.storeVis(stack, aspect, ((ItemWandUpgradeable)stack.func_77973_b()).getMaxVis(stack));
+                this.storeVis(stack, aspect, ((ItemWandUpgradeable)stack.getItem()).getMaxVis(stack));
             }
         }
     }
@@ -163,13 +163,13 @@ public class ItemWandUpgradeable extends ItemWandCasting implements IInternalSto
     
     public ItemStack[] getContainedItems(final ItemStack stack) {
         final ItemStack[] stackList = new ItemStack[this.getInternalSlots(stack)];
-        if (stack.func_77942_o()) {
-            final NBTTagList inv = stack.func_77978_p().func_150295_c("Inv", 10);
-            for (int i = 0; i < inv.func_74745_c(); ++i) {
-                final NBTTagCompound tag = inv.func_150305_b(i);
-                final int slot = tag.func_74771_c("Slot") & 0xFF;
+        if (stack.hasTagCompound()) {
+            final NBTTagList inv = stack.getTagCompound().getTagList("Inv", 10);
+            for (int i = 0; i < inv.tagCount(); ++i) {
+                final NBTTagCompound tag = inv.getCompoundTagAt(i);
+                final int slot = tag.getByte("Slot") & 0xFF;
                 if (slot >= 0 && slot < stackList.length) {
-                    stackList[slot] = ItemStack.func_77949_a(tag);
+                    stackList[slot] = ItemStack.loadItemStackFromNBT(tag);
                 }
             }
         }
@@ -181,24 +181,24 @@ public class ItemWandUpgradeable extends ItemWandCasting implements IInternalSto
         for (int i = 0; i < stackList.length; ++i) {
             if (stackList[i] != null) {
                 final NBTTagCompound tag = new NBTTagCompound();
-                tag.func_74774_a("Slot", (byte)i);
-                stackList[i].func_77955_b(tag);
-                inv.func_74742_a((NBTBase)tag);
+                tag.setByte("Slot", (byte)i);
+                stackList[i].writeToNBT(tag);
+                inv.appendTag((NBTBase)tag);
             }
         }
-        if (!stack.func_77942_o()) {
-            stack.func_77982_d(new NBTTagCompound());
+        if (!stack.hasTagCompound()) {
+            stack.setTagCompound(new NBTTagCompound());
         }
-        stack.func_77978_p().func_74782_a("Inv", (NBTBase)inv);
+        stack.getTagCompound().setTag("Inv", (NBTBase)inv);
     }
     
     public int getMaxVis(final ItemStack stack) {
-        return (int)(this.getRod(stack).getCapacity() * 100 * Math.pow(1.5, this.getUpgrades(stack).func_74762_e("capacitors")));
+        return (int)(this.getRod(stack).getCapacity() * 100 * Math.pow(1.5, this.getUpgrades(stack).getInteger("capacitors")));
     }
     
-    public void func_77663_a(final ItemStack is, final World w, final Entity e, final int slot, final boolean currentItem) {
-        super.func_77663_a(is, w, e, slot, currentItem);
-        if (this.getUpgrades(is).func_74762_e("chargers") > 0 && e.field_70173_aa % (80 / this.getUpgrades(is).func_74762_e("chargers")) == 0) {
+    public void onUpdate(final ItemStack is, final World w, final Entity e, final int slot, final boolean currentItem) {
+        super.onUpdate(is, w, e, slot, currentItem);
+        if (this.getUpgrades(is).getInteger("chargers") > 0 && e.ticksExisted % (80 / this.getUpgrades(is).getInteger("chargers")) == 0) {
             for (final Aspect aspect : Aspect.getPrimalAspects()) {
                 if (this.getVis(is, aspect) < this.getMaxVis(is)) {
                     this.addVis(is, aspect, 1, true);
@@ -209,10 +209,10 @@ public class ItemWandUpgradeable extends ItemWandCasting implements IInternalSto
     }
     
     public int getFocusPotency(final ItemStack itemstack) {
-        return super.getFocusPotency(itemstack) + this.getUpgrades(itemstack).func_74762_e("energizers");
+        return super.getFocusPotency(itemstack) + this.getUpgrades(itemstack).getInteger("energizers");
     }
     
     public float getConsumptionModifier(final ItemStack is, final EntityPlayer player, final Aspect aspect, final boolean crafting) {
-        return super.getConsumptionModifier(is, player, aspect, crafting) + 0.1f * this.getUpgrades(is).func_74762_e("energizers");
+        return super.getConsumptionModifier(is, player, aspect, crafting) + 0.1f * this.getUpgrades(is).getInteger("energizers");
     }
 }

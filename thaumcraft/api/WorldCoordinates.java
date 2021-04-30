@@ -21,10 +21,10 @@ public class WorldCoordinates implements Comparable
     }
     
     public WorldCoordinates(final TileEntity tile) {
-        this.x = tile.field_145851_c;
-        this.y = tile.field_145848_d;
-        this.z = tile.field_145849_e;
-        this.dim = tile.func_145831_w().field_73011_w.field_76574_g;
+        this.x = tile.xCoord;
+        this.y = tile.yCoord;
+        this.z = tile.zCoord;
+        this.dim = tile.getWorld().provider.dimensionId;
     }
     
     public WorldCoordinates(final WorldCoordinates par1ChunkCoordinates) {
@@ -76,16 +76,16 @@ public class WorldCoordinates implements Comparable
     }
     
     public void readNBT(final NBTTagCompound nbt) {
-        this.x = nbt.func_74762_e("w_x");
-        this.y = nbt.func_74762_e("w_y");
-        this.z = nbt.func_74762_e("w_z");
-        this.dim = nbt.func_74762_e("w_d");
+        this.x = nbt.getInteger("w_x");
+        this.y = nbt.getInteger("w_y");
+        this.z = nbt.getInteger("w_z");
+        this.dim = nbt.getInteger("w_d");
     }
     
     public void writeNBT(final NBTTagCompound nbt) {
-        nbt.func_74768_a("w_x", this.x);
-        nbt.func_74768_a("w_y", this.y);
-        nbt.func_74768_a("w_z", this.z);
-        nbt.func_74768_a("w_d", this.dim);
+        nbt.setInteger("w_x", this.x);
+        nbt.setInteger("w_y", this.y);
+        nbt.setInteger("w_z", this.z);
+        nbt.setInteger("w_d", this.dim);
     }
 }

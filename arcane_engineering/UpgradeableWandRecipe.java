@@ -42,8 +42,8 @@ public class UpgradeableWandRecipe implements IArcaneRecipe
             if (bc != null) {
                 final int cost = cc * cr;
                 out = new ItemStack(AEContent.wandUpgradeable, 1, cost);
-                ((ItemWandUpgradeable)out.func_77973_b()).setCap(out, (WandCap)WandCap.caps.get(bc));
-                ((ItemWandUpgradeable)out.func_77973_b()).setRod(out, AEContent.WAND_ROD_UPGRADEABLE);
+                ((ItemWandUpgradeable)out.getItem()).setCap(out, (WandCap)WandCap.caps.get(bc));
+                ((ItemWandUpgradeable)out.getItem()).setRod(out, AEContent.WAND_ROD_UPGRADEABLE);
             }
         }
         return out;
@@ -102,7 +102,7 @@ public class UpgradeableWandRecipe implements IArcaneRecipe
         if (cap1 != null && cap2 != null && rod != null && this.checkItemEquals(cap1, cap2)) {
             for (final WandCap wc : WandCap.caps.values()) {
                 if (this.checkItemEquals(cap1, wc.getItem())) {
-                    if (!ThaumcraftApiHelper.isResearchComplete(player.func_70005_c_(), wc.getResearch())) {
+                    if (!ThaumcraftApiHelper.isResearchComplete(player.getCommandSenderName(), wc.getResearch())) {
                         continue;
                     }
                     bc = true;
@@ -110,7 +110,7 @@ public class UpgradeableWandRecipe implements IArcaneRecipe
                 }
             }
             final WandRod wr = AEContent.WAND_ROD_UPGRADEABLE;
-            if (this.checkItemEquals(rod, wr.getItem()) && ThaumcraftApiHelper.isResearchComplete(player.func_70005_c_(), wr.getResearch())) {
+            if (this.checkItemEquals(rod, wr.getItem()) && ThaumcraftApiHelper.isResearchComplete(player.getCommandSenderName(), wr.getResearch())) {
                 br = true;
             }
         }
@@ -118,7 +118,7 @@ public class UpgradeableWandRecipe implements IArcaneRecipe
     }
     
     private boolean checkItemEquals(final ItemStack target, final ItemStack input) {
-        return (input != null || target == null) && (input == null || target != null) && target.func_77973_b() == input.func_77973_b() && (!target.func_77942_o() || ItemStack.func_77970_a(target, input)) && (target.func_77960_j() == 32767 || target.func_77960_j() == input.func_77960_j());
+        return (input != null || target == null) && (input == null || target != null) && target.getItem() == input.getItem() && (!target.hasTagCompound() || ItemStack.areItemStackTagsEqual(target, input)) && (target.getMetadata() == 32767 || target.getMetadata() == input.getMetadata());
     }
     
     @Override

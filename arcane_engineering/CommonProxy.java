@@ -13,6 +13,6 @@ public class CommonProxy
     }
     
     public EntityPlayer getPlayerEntity(final MessageContext ctx) {
-        return (EntityPlayer)ctx.getServerHandler().field_147369_b;
+        return (EntityPlayer)ctx.getServerHandler().playerEntity;
     }
 }

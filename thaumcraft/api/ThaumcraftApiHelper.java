@@ -63,10 +63,10 @@ public class ThaumcraftApiHelper
     }
     
     public static boolean areItemsEqual(final ItemStack s1, final ItemStack s2) {
-        if (s1.func_77984_f() && s2.func_77984_f()) {
-            return s1.func_77973_b() == s2.func_77973_b();
+        if (s1.isItemStackDamageable() && s2.isItemStackDamageable()) {
+            return s1.getItem() == s2.getItem();
         }
-        return s1.func_77973_b() == s2.func_77973_b() && s1.func_77960_j() == s2.func_77960_j();
+        return s1.getItem() == s2.getItem() && s1.getMetadata() == s2.getMetadata();
     }
     
     public static boolean isResearchComplete(final String username, final String researchkey) {
@@ -112,17 +112,17 @@ public class ThaumcraftApiHelper
         if (recipeItem == null || slotItem == null) {
             return false;
         }
-        if (recipeItem.field_77990_d != null && slotItem.field_77990_d == null) {
+        if (recipeItem.stackTagCompound != null && slotItem.stackTagCompound == null) {
             return false;
         }
-        if (recipeItem.field_77990_d == null) {
+        if (recipeItem.stackTagCompound == null) {
             return true;
         }
-        for (final String s : recipeItem.field_77990_d.func_150296_c()) {
-            if (!slotItem.field_77990_d.func_74764_b(s)) {
+        for (final String s : recipeItem.stackTagCompound.getKeySet()) {
+            if (!slotItem.stackTagCompound.hasKey(s)) {
                 return false;
             }
-            if (!slotItem.field_77990_d.func_74781_a(s).toString().equals(recipeItem.field_77990_d.func_74781_a(s).toString())) {
+            if (!slotItem.stackTagCompound.getTag(s).toString().equals(recipeItem.stackTagCompound.getTag(s).toString())) {
                 return false;
             }
         }
@@ -130,11 +130,11 @@ public class ThaumcraftApiHelper
     }
     
     public static boolean itemMatches(final ItemStack target, final ItemStack input, final boolean strict) {
-        return (input != null || target == null) && (input == null || target != null) && target.func_77973_b() == input.func_77973_b() && ((target.func_77960_j() == 32767 && !strict) || target.func_77960_j() == input.func_77960_j());
+        return (input != null || target == null) && (input == null || target != null) && target.getItem() == input.getItem() && ((target.getMetadata() == 32767 && !strict) || target.getMetadata() == input.getMetadata());
     }
     
     public static TileEntity getConnectableTile(final World world, final int x, final int y, final int z, final ForgeDirection face) {
-        final TileEntity te = world.func_147438_o(x + face.offsetX, y + face.offsetY, z + face.offsetZ);
+        final TileEntity te = world.getTileEntity(x + face.offsetX, y + face.offsetY, z + face.offsetZ);
         if (te instanceof IEssentiaTransport && ((IEssentiaTransport)te).isConnectable(face.getOpposite())) {
             return te;
         }
@@ -142,7 +142,7 @@ public class ThaumcraftApiHelper
     }
     
     public static TileEntity getConnectableTile(final IBlockAccess world, final int x, final int y, final int z, final ForgeDirection face) {
-        final TileEntity te = world.func_147438_o(x + face.offsetX, y + face.offsetY, z + face.offsetZ);
+        final TileEntity te = world.getTileEntity(x + face.offsetX, y + face.offsetY, z + face.offsetZ);
         if (te instanceof IEssentiaTransport && ((IEssentiaTransport)te).isConnectable(face.getOpposite())) {
             return te;
         }
@@ -192,22 +192,22 @@ public class ThaumcraftApiHelper
     }
     
     public static MovingObjectPosition rayTraceIgnoringSource(final World world, final Vec3 v1, final Vec3 v2, final boolean bool1, final boolean bool2, final boolean bool3) {
-        if (Double.isNaN(v1.field_72450_a) || Double.isNaN(v1.field_72448_b) || Double.isNaN(v1.field_72449_c)) {
+        if (Double.isNaN(v1.xCoord) || Double.isNaN(v1.yCoord) || Double.isNaN(v1.zCoord)) {
             return null;
         }
-        if (!Double.isNaN(v2.field_72450_a) && !Double.isNaN(v2.field_72448_b) && !Double.isNaN(v2.field_72449_c)) {
-            final int i = MathHelper.func_76128_c(v2.field_72450_a);
-            final int j = MathHelper.func_76128_c(v2.field_72448_b);
-            final int k = MathHelper.func_76128_c(v2.field_72449_c);
-            int l = MathHelper.func_76128_c(v1.field_72450_a);
-            int i2 = MathHelper.func_76128_c(v1.field_72448_b);
-            int j2 = MathHelper.func_76128_c(v1.field_72449_c);
-            final Block block = world.func_147439_a(l, i2, j2);
-            int k2 = world.func_72805_g(l, i2, j2);
+        if (!Double.isNaN(v2.xCoord) && !Double.isNaN(v2.yCoord) && !Double.isNaN(v2.zCoord)) {
+            final int i = MathHelper.floor_double(v2.xCoord);
+            final int j = MathHelper.floor_double(v2.yCoord);
+            final int k = MathHelper.floor_double(v2.zCoord);
+            int l = MathHelper.floor_double(v1.xCoord);
+            int i2 = MathHelper.floor_double(v1.yCoord);
+            int j2 = MathHelper.floor_double(v1.zCoord);
+            final Block block = world.getBlock(l, i2, j2);
+            int k2 = world.getBlockMetadata(l, i2, j2);
             MovingObjectPosition movingobjectposition2 = null;
             k2 = 200;
             while (k2-- >= 0) {
-                if (Double.isNaN(v1.field_72450_a) || Double.isNaN(v1.field_72448_b) || Double.isNaN(v1.field_72449_c)) {
+                if (Double.isNaN(v1.xCoord) || Double.isNaN(v1.yCoord) || Double.isNaN(v1.zCoord)) {
                     return null;
                 }
                 if (l == i && i2 == j && j2 == k) {
@@ -249,17 +249,17 @@ public class ThaumcraftApiHelper
                 double d4 = 999.0;
                 double d5 = 999.0;
                 double d6 = 999.0;
-                final double d7 = v2.field_72450_a - v1.field_72450_a;
-                final double d8 = v2.field_72448_b - v1.field_72448_b;
-                final double d9 = v2.field_72449_c - v1.field_72449_c;
+                final double d7 = v2.xCoord - v1.xCoord;
+                final double d8 = v2.yCoord - v1.yCoord;
+                final double d9 = v2.zCoord - v1.zCoord;
                 if (flag6) {
-                    d4 = (d0 - v1.field_72450_a) / d7;
+                    d4 = (d0 - v1.xCoord) / d7;
                 }
                 if (flag7) {
-                    d5 = (d2 - v1.field_72448_b) / d8;
+                    d5 = (d2 - v1.yCoord) / d8;
                 }
                 if (flag8) {
-                    d6 = (d3 - v1.field_72449_c) / d9;
+                    d6 = (d3 - v1.zCoord) / d9;
                 }
                 final boolean flag9 = false;
                 byte b0;
@@ -270,9 +270,9 @@ public class ThaumcraftApiHelper
                     else {
                         b0 = 5;
                     }
-                    v1.field_72450_a = d0;
-                    v1.field_72448_b += d8 * d4;
-                    v1.field_72449_c += d9 * d4;
+                    v1.xCoord = d0;
+                    v1.yCoord += d8 * d4;
+                    v1.zCoord += d9 * d4;
                 }
                 else if (d5 < d6) {
                     if (j > i2) {
@@ -281,9 +281,9 @@ public class ThaumcraftApiHelper
                     else {
                         b0 = 1;
                     }
-                    v1.field_72450_a += d7 * d5;
-                    v1.field_72448_b = d2;
-                    v1.field_72449_c += d9 * d5;
+                    v1.xCoord += d7 * d5;
+                    v1.yCoord = d2;
+                    v1.zCoord += d9 * d5;
                 }
                 else {
                     if (k > j2) {
@@ -292,45 +292,45 @@ public class ThaumcraftApiHelper
                     else {
                         b0 = 3;
                     }
-                    v1.field_72450_a += d7 * d6;
-                    v1.field_72448_b += d8 * d6;
-                    v1.field_72449_c = d3;
+                    v1.xCoord += d7 * d6;
+                    v1.yCoord += d8 * d6;
+                    v1.zCoord = d3;
                 }
-                final Vec3 func_72443_a;
-                final Vec3 vec32 = func_72443_a = Vec3.func_72443_a(v1.field_72450_a, v1.field_72448_b, v1.field_72449_c);
-                final double field_72450_a = MathHelper.func_76128_c(v1.field_72450_a);
-                func_72443_a.field_72450_a = field_72450_a;
-                l = (int)field_72450_a;
+                final Vec3 vectorHelper;
+                final Vec3 vec32 = vectorHelper = Vec3.createVectorHelper(v1.xCoord, v1.yCoord, v1.zCoord);
+                final double xCoord = MathHelper.floor_double(v1.xCoord);
+                vectorHelper.xCoord = xCoord;
+                l = (int)xCoord;
                 if (b0 == 5) {
                     --l;
                     final Vec3 vec33 = vec32;
-                    ++vec33.field_72450_a;
+                    ++vec33.xCoord;
                 }
                 final Vec3 vec34 = vec32;
-                final double field_72448_b = MathHelper.func_76128_c(v1.field_72448_b);
-                vec34.field_72448_b = field_72448_b;
-                i2 = (int)field_72448_b;
+                final double yCoord = MathHelper.floor_double(v1.yCoord);
+                vec34.yCoord = yCoord;
+                i2 = (int)yCoord;
                 if (b0 == 1) {
                     --i2;
                     final Vec3 vec35 = vec32;
-                    ++vec35.field_72448_b;
+                    ++vec35.yCoord;
                 }
                 final Vec3 vec36 = vec32;
-                final double field_72449_c = MathHelper.func_76128_c(v1.field_72449_c);
-                vec36.field_72449_c = field_72449_c;
-                j2 = (int)field_72449_c;
+                final double zCoord = MathHelper.floor_double(v1.zCoord);
+                vec36.zCoord = zCoord;
+                j2 = (int)zCoord;
                 if (b0 == 3) {
                     --j2;
                     final Vec3 vec37 = vec32;
-                    ++vec37.field_72449_c;
+                    ++vec37.zCoord;
                 }
-                final Block block2 = world.func_147439_a(l, i2, j2);
-                final int l2 = world.func_72805_g(l, i2, j2);
-                if (bool2 && block2.func_149668_a(world, l, i2, j2) == null) {
+                final Block block2 = world.getBlock(l, i2, j2);
+                final int l2 = world.getBlockMetadata(l, i2, j2);
+                if (bool2 && block2.getCollisionBoundingBoxFromPool(world, l, i2, j2) == null) {
                     continue;
                 }
-                if (block2.func_149678_a(l2, bool1)) {
-                    final MovingObjectPosition movingobjectposition3 = block2.func_149731_a(world, l, i2, j2, v1, v2);
+                if (block2.canStopRayTrace(l2, bool1)) {
+                    final MovingObjectPosition movingobjectposition3 = block2.collisionRayTrace(world, l, i2, j2, v1, v2);
                     if (movingobjectposition3 != null) {
                         return movingobjectposition3;
                     }

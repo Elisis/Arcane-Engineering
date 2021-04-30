@@ -16,7 +16,7 @@ public class VisNetHandler
     
     public static int drainVis(final World world, final int x, final int y, final int z, final Aspect aspect, int amount) {
         int drainedAmount = 0;
-        final WorldCoordinates drainer = new WorldCoordinates(x, y, z, world.field_73011_w.field_76574_g);
+        final WorldCoordinates drainer = new WorldCoordinates(x, y, z, world.provider.dimensionId);
         if (!VisNetHandler.nearbyNodes.containsKey(drainer)) {
             calculateNearbyNodes(world, x, y, z);
         }
@@ -32,7 +32,7 @@ public class VisNetHandler
                 amount -= a;
                 if (a > 0) {
                     final int color = Aspect.getPrimalAspects().indexOf(aspect);
-                    generateVisEffect(world.field_73011_w.field_76574_g, x, y, z, node.field_145851_c, node.field_145848_d, node.field_145849_e, color);
+                    generateVisEffect(world.provider.dimensionId, x, y, z, node.xCoord, node.yCoord, node.zCoord, color);
                 }
                 if (amount <= 0) {
                     break;
@@ -47,22 +47,22 @@ public class VisNetHandler
     }
     
     public static void addSource(final World world, final TileVisNode vs) {
-        HashMap<WorldCoordinates, WeakReference<TileVisNode>> sourcelist = VisNetHandler.sources.get(world.field_73011_w.field_76574_g);
+        HashMap<WorldCoordinates, WeakReference<TileVisNode>> sourcelist = VisNetHandler.sources.get(world.provider.dimensionId);
         if (sourcelist == null) {
             sourcelist = new HashMap<WorldCoordinates, WeakReference<TileVisNode>>();
         }
         sourcelist.put(vs.getLocation(), new WeakReference<TileVisNode>(vs));
-        VisNetHandler.sources.put(world.field_73011_w.field_76574_g, sourcelist);
+        VisNetHandler.sources.put(world.provider.dimensionId, sourcelist);
         VisNetHandler.nearbyNodes.clear();
     }
     
     public static boolean isNodeValid(final WeakReference<TileVisNode> node) {
-        return node != null && node.get() != null && !node.get().func_145837_r();
+        return node != null && node.get() != null && !node.get().isInvalid();
     }
     
     public static WeakReference<TileVisNode> addNode(final World world, final TileVisNode vn) {
         final WeakReference ref = new WeakReference((T)vn);
-        HashMap<WorldCoordinates, WeakReference<TileVisNode>> sourcelist = VisNetHandler.sources.get(world.field_73011_w.field_76574_g);
+        HashMap<WorldCoordinates, WeakReference<TileVisNode>> sourcelist = VisNetHandler.sources.get(world.provider.dimensionId);
         if (sourcelist == null) {
             sourcelist = new HashMap<WorldCoordinates, WeakReference<TileVisNode>>();
             return null;
@@ -106,7 +106,7 @@ public class VisNetHandler
         for (final WeakReference<TileVisNode> childWR : parent.getChildren()) {
             final TileVisNode child = childWR.get();
             if (child != null && !child.equals(target) && !child.equals(parent)) {
-                final float r2 = inRange(child.func_145831_w(), child.getLocation(), target.getLocation(), target.getRange());
+                final float r2 = inRange(child.getWorld(), child.getLocation(), target.getLocation(), target.getRange());
                 if (r2 > 0.0f) {
                     in.add(new Object[] { child, r2 });
                 }
@@ -122,13 +122,13 @@ public class VisNetHandler
     }
     
     private static void calculateNearbyNodes(final World world, final int x, final int y, final int z) {
-        HashMap<WorldCoordinates, WeakReference<TileVisNode>> sourcelist = VisNetHandler.sources.get(world.field_73011_w.field_76574_g);
+        HashMap<WorldCoordinates, WeakReference<TileVisNode>> sourcelist = VisNetHandler.sources.get(world.provider.dimensionId);
         if (sourcelist == null) {
             sourcelist = new HashMap<WorldCoordinates, WeakReference<TileVisNode>>();
             return;
         }
         final ArrayList<WeakReference<TileVisNode>> cn = new ArrayList<WeakReference<TileVisNode>>();
-        final WorldCoordinates drainer = new WorldCoordinates(x, y, z, world.field_73011_w.field_76574_g);
+        final WorldCoordinates drainer = new WorldCoordinates(x, y, z, world.provider.dimensionId);
         final ArrayList<Object[]> nearby = new ArrayList<Object[]>();
         for (final WeakReference<TileVisNode> root : sourcelist.values()) {
             if (!isNodeValid(root)) {
@@ -147,7 +147,7 @@ public class VisNetHandler
             for (final WeakReference<TileVisNode> child : children) {
                 final TileVisNode n = child.get();
                 if (n != null && !n.equals(root)) {
-                    final float r2 = inRange(n.func_145831_w(), n.getLocation(), drainer, n.getRange());
+                    final float r2 = inRange(n.getWorld(), n.getLocation(), drainer, n.getRange());
                     if (r2 <= 0.0f || r2 >= range) {
                         continue;
                     }
@@ -166,7 +166,7 @@ public class VisNetHandler
     private static ArrayList<WeakReference<TileVisNode>> getAllChildren(final TileVisNode source, ArrayList<WeakReference<TileVisNode>> list) {
         for (final WeakReference<TileVisNode> child : source.getChildren()) {
             final TileVisNode n = child.get();
-            if (n != null && n.func_145831_w() != null && isChunkLoaded(n.func_145831_w(), n.field_145851_c, n.field_145849_e)) {
+            if (n != null && n.getWorld() != null && isChunkLoaded(n.getWorld(), n.xCoord, n.zCoord)) {
                 list.add(child);
                 list = getAllChildren(n, list);
             }
@@ -177,12 +177,12 @@ public class VisNetHandler
     public static boolean isChunkLoaded(final World world, final int x, final int z) {
         final int xx = x >> 4;
         final int zz = z >> 4;
-        return world.func_72863_F().func_73149_a(xx, zz);
+        return world.getChunkProvider().chunkExists(xx, zz);
     }
     
     public static boolean canNodeBeSeen(final TileVisNode source, final TileVisNode target) {
-        final MovingObjectPosition mop = ThaumcraftApiHelper.rayTraceIgnoringSource(source.func_145831_w(), Vec3.func_72443_a(source.field_145851_c + 0.5, source.field_145848_d + 0.5, source.field_145849_e + 0.5), Vec3.func_72443_a(target.field_145851_c + 0.5, target.field_145848_d + 0.5, target.field_145849_e + 0.5), false, true, false);
-        return mop == null || (mop.field_72313_a == MovingObjectPosition.MovingObjectType.BLOCK && mop.field_72311_b == target.field_145851_c && mop.field_72312_c == target.field_145848_d && mop.field_72309_d == target.field_145849_e);
+        final MovingObjectPosition mop = ThaumcraftApiHelper.rayTraceIgnoringSource(source.getWorld(), Vec3.createVectorHelper(source.xCoord + 0.5, source.yCoord + 0.5, source.zCoord + 0.5), Vec3.createVectorHelper(target.xCoord + 0.5, target.yCoord + 0.5, target.zCoord + 0.5), false, true, false);
+        return mop == null || (mop.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK && mop.blockX == target.xCoord && mop.blockY == target.yCoord && mop.blockZ == target.zCoord);
     }
     
     static {

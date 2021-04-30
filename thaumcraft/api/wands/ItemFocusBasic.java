@@ -16,24 +16,24 @@ public class ItemFocusBasic extends Item
     public IIcon icon;
     
     public ItemFocusBasic() {
-        this.field_77777_bU = 1;
+        this.maxStackSize = 1;
         this.canRepair = false;
-        this.func_77656_e(0);
+        this.setMaxDurability(0);
     }
     
     @SideOnly(Side.CLIENT)
-    public IIcon func_77617_a(final int par1) {
+    public IIcon getIconFromDamage(final int par1) {
         return this.icon;
     }
     
-    public boolean func_77645_m() {
+    public boolean isDamageable() {
         return false;
     }
     
-    public void func_77624_a(final ItemStack stack, final EntityPlayer player, final List list, final boolean par4) {
+    public void addInformation(final ItemStack stack, final EntityPlayer player, final List list, final boolean par4) {
         final AspectList al = this.getVisCost(stack);
         if (al != null && al.size() > 0) {
-            list.add(StatCollector.func_74838_a(this.isVisCostPerTick(stack) ? "item.Focus.cost2" : "item.Focus.cost1"));
+            list.add(StatCollector.translateToLocal(this.isVisCostPerTick(stack) ? "item.Focus.cost2" : "item.Focus.cost1"));
             for (final Aspect aspect : al.getAspectsSorted()) {
                 final DecimalFormat myFormatter = new DecimalFormat("#####.##");
                 final String amount = myFormatter.format(al.getAmount(aspect) / 100.0f);
@@ -55,7 +55,7 @@ public class ItemFocusBasic extends Item
             }
         }
         for (final Short id2 : map.keySet()) {
-            list.add(EnumChatFormatting.DARK_PURPLE + FocusUpgradeType.types[id2].getLocalizedName() + ((map.get(id2) > 1) ? (" " + StatCollector.func_74838_a("enchantment.level." + map.get(id2))) : ""));
+            list.add(EnumChatFormatting.DARK_PURPLE + FocusUpgradeType.types[id2].getLocalizedName() + ((map.get(id2) > 1) ? (" " + StatCollector.translateToLocal("enchantment.level." + map.get(id2))) : ""));
         }
     }
     
@@ -63,7 +63,7 @@ public class ItemFocusBasic extends Item
         return false;
     }
     
-    public EnumRarity func_77613_e(final ItemStack focusstack) {
+    public EnumRarity getRarity(final ItemStack focusstack) {
         return EnumRarity.rare;
     }
     
@@ -113,8 +113,8 @@ public class ItemFocusBasic extends Item
         if (nbttaglist == null) {
             return l;
         }
-        for (int j = 0; j < nbttaglist.func_74745_c() && j < 5; ++j) {
-            l[j] = nbttaglist.func_150305_b(j).func_74765_d("id");
+        for (int j = 0; j < nbttaglist.tagCount() && j < 5; ++j) {
+            l[j] = nbttaglist.getCompoundTagAt(j).getShort("id");
         }
         return l;
     }
@@ -163,28 +163,28 @@ public class ItemFocusBasic extends Item
     }
     
     private NBTTagList getFocusUpgradeTagList(final ItemStack focusstack) {
-        return (focusstack.field_77990_d == null) ? null : focusstack.field_77990_d.func_150295_c("upgrade", 10);
+        return (focusstack.stackTagCompound == null) ? null : focusstack.stackTagCompound.getTagList("upgrade", 10);
     }
     
     private void setFocusUpgradeTagList(final ItemStack focusstack, final short[] upgrades) {
-        if (!focusstack.func_77942_o()) {
-            focusstack.func_77982_d(new NBTTagCompound());
+        if (!focusstack.hasTagCompound()) {
+            focusstack.setTagCompound(new NBTTagCompound());
         }
-        final NBTTagCompound nbttagcompound = focusstack.func_77978_p();
+        final NBTTagCompound nbttagcompound = focusstack.getTagCompound();
         final NBTTagList tlist = new NBTTagList();
-        nbttagcompound.func_74782_a("upgrade", (NBTBase)tlist);
+        nbttagcompound.setTag("upgrade", (NBTBase)tlist);
         for (final short id : upgrades) {
             final NBTTagCompound f = new NBTTagCompound();
-            f.func_74777_a("id", id);
-            tlist.func_74742_a((NBTBase)f);
+            f.setShort("id", id);
+            tlist.appendTag((NBTBase)f);
         }
     }
     
-    public void func_77663_a(final ItemStack stack, final World world, final Entity entity, final int p_77663_4_, final boolean p_77663_5_) {
-        if (stack.field_77990_d != null && stack.field_77990_d.func_74764_b("ench")) {
-            stack.field_77990_d.func_82580_o("ench");
+    public void onUpdate(final ItemStack stack, final World world, final Entity entity, final int p_77663_4_, final boolean p_77663_5_) {
+        if (stack.stackTagCompound != null && stack.stackTagCompound.hasKey("ench")) {
+            stack.stackTagCompound.removeTag("ench");
         }
-        super.func_77663_a(stack, world, entity, p_77663_4_, p_77663_5_);
+        super.onUpdate(stack, world, entity, p_77663_4_, p_77663_5_);
     }
     
     public enum WandFocusAnimation

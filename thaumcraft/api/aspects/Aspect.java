@@ -96,7 +96,7 @@ public class Aspect
     }
     
     public String getLocalizedDescription() {
-        return StatCollector.func_74838_a("tc.aspect." + this.tag);
+        return StatCollector.translateToLocal("tc.aspect." + this.tag);
     }
     
     public String getTag() {

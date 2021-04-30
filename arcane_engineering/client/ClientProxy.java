@@ -17,7 +17,7 @@ public class ClientProxy extends CommonProxy
     @Override
     public void registerRenders() {
         ClientRegistry.bindTileEntitySpecialRenderer((Class)TileEntityDestabilizer.class, (TileEntitySpecialRenderer)new RenderDestabilizer());
-        MinecraftForgeClient.registerItemRenderer(Item.func_150898_a(AEContent.destabilizer), (IItemRenderer)new ItemRenderDestabilizer());
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AEContent.destabilizer), (IItemRenderer)new ItemRenderDestabilizer());
         MinecraftForgeClient.registerItemRenderer(AEContent.wandUpgradeable, (IItemRenderer)new ItemWandRenderer());
     }
     
@@ -28,6 +28,6 @@ public class ClientProxy extends CommonProxy
     
     @Override
     public EntityPlayer getPlayerEntity(final MessageContext ctx) {
-        return (EntityPlayer)(ctx.side.isClient() ? Minecraft.func_71410_x().field_71439_g : super.getPlayerEntity(ctx));
+        return (EntityPlayer)(ctx.side.isClient() ? Minecraft.getMinecraft().thePlayer : super.getPlayerEntity(ctx));
     }
 }

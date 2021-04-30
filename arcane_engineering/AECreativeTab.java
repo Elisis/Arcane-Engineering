@@ -9,7 +9,7 @@ public class AECreativeTab extends CreativeTabs
         super(p_i1853_1_, p_i1853_2_);
     }
     
-    public Item func_78016_d() {
-        return new ItemStack(AEContent.destabilizer).func_77973_b();
+    public Item getTabIconItem() {
+        return new ItemStack(AEContent.destabilizer).getItem();
     }
 }

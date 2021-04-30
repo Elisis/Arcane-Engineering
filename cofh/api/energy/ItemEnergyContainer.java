@@ -45,36 +45,36 @@ public class ItemEnergyContainer extends Item implements IEnergyContainerItem
     }
     
     public int receiveEnergy(final ItemStack container, final int maxReceive, final boolean simulate) {
-        if (container.field_77990_d == null) {
-            container.field_77990_d = new NBTTagCompound();
+        if (container.stackTagCompound == null) {
+            container.stackTagCompound = new NBTTagCompound();
         }
-        int energy = container.field_77990_d.func_74762_e("Energy");
+        int energy = container.stackTagCompound.getInteger("Energy");
         final int energyReceived = Math.min(this.capacity - energy, Math.min(this.maxReceive, maxReceive));
         if (!simulate) {
             energy += energyReceived;
-            container.field_77990_d.func_74768_a("Energy", energy);
+            container.stackTagCompound.setInteger("Energy", energy);
         }
         return energyReceived;
     }
     
     public int extractEnergy(final ItemStack container, final int maxExtract, final boolean simulate) {
-        if (container.field_77990_d == null || !container.field_77990_d.func_74764_b("Energy")) {
+        if (container.stackTagCompound == null || !container.stackTagCompound.hasKey("Energy")) {
             return 0;
         }
-        int energy = container.field_77990_d.func_74762_e("Energy");
+        int energy = container.stackTagCompound.getInteger("Energy");
         final int energyExtracted = Math.min(energy, Math.min(this.maxExtract, maxExtract));
         if (!simulate) {
             energy -= energyExtracted;
-            container.field_77990_d.func_74768_a("Energy", energy);
+            container.stackTagCompound.setInteger("Energy", energy);
         }
         return energyExtracted;
     }
     
     public int getEnergyStored(final ItemStack container) {
-        if (container.field_77990_d == null || !container.field_77990_d.func_74764_b("Energy")) {
+        if (container.stackTagCompound == null || !container.stackTagCompound.hasKey("Energy")) {
             return 0;
         }
-        return container.field_77990_d.func_74762_e("Energy");
+        return container.stackTagCompound.getInteger("Energy");
     }
     
     public int getMaxEnergyStored(final ItemStack container) {

@@ -26,11 +26,11 @@ public class AEResearch
     
     public static void registerResearch() {
         AspectList ra = new AspectList();
-        ResearchPage[] pages = { new ResearchPage("ArcaneEngineering.research_page.MAGITECH.1"), new ResearchPage((IRecipe)new ShapelessOreRecipe(new ItemStack((Item)IEContent.itemTool, 1, 3), new Object[] { Items.field_151122_aG, Blocks.field_150442_at })) };
+        ResearchPage[] pages = { new ResearchPage("ArcaneEngineering.research_page.MAGITECH.1"), new ResearchPage((IRecipe)new ShapelessOreRecipe(new ItemStack((Item)IEContent.itemTool, 1, 3), new Object[] { Items.book, Blocks.lever })) };
         newResearch("MAGITECH", "ARCANEENGINEERING", ra, 0, 0, 0, new ItemStack((Item)IEContent.itemTool, 1, 3)).setPages(pages).setStub().setAutoUnlock().setSpecial().registerResearchItem();
         final ItemStack wand = new ItemStack(ConfigItems.itemWandCasting, 1, 0);
-        ((ItemWandCasting)wand.func_77973_b()).setCap(wand, ConfigItems.WAND_CAP_IRON);
-        ((ItemWandCasting)wand.func_77973_b()).setRod(wand, ConfigItems.WAND_ROD_WOOD);
+        ((ItemWandCasting)wand.getItem()).setCap(wand, ConfigItems.WAND_CAP_IRON);
+        ((ItemWandCasting)wand.getItem()).setRod(wand, ConfigItems.WAND_ROD_WOOD);
         newFakeResearch("BASICTHAUMATURGY", "THAUMATURGY", 0, 2, wand).setRound().registerResearchItem();
         newFakeResearch("THAUMIUM", "ALCHEMY", 4, 5, ItemApi.getItem("itemResource", 2)).registerResearchItem();
         newFakeResearch("VOIDMETAL", "ELDRITCH", 4, 4, ItemApi.getItem("itemResource", 16)).registerResearchItem();
@@ -43,7 +43,7 @@ public class AEResearch
         newResearch("DRILLVOID", "ARCANEENGINEERING", ra, 3, 2, 2, new ItemStack(AEContent.drillHeadThaum, 1, 1)).setPages(pages).setParents("DRILLTHAUMIUM", "AEFAKE_VOIDMETAL").registerResearchItem();
         ra = new AspectList().add(Aspect.AURA, 4).add(Aspect.ENERGY, 4).add(Aspect.HUNGER, 4);
         pages = new ResearchPage[] { new ResearchPage("ArcaneEngineering.research_page.NODEDESTABILIZER"), new ResearchPage(new IArcaneRecipe[] { AEResearch.recipes.get(0) }) };
-        newResearch("NODEDESTABILIZER", "ARCANEENGINEERING", ra, -3, 2, 2, new ItemStack(Item.func_150898_a(AEContent.destabilizer))).setPages(pages).setParents("AEFAKE_NODESTABILIZER").registerResearchItem();
+        newResearch("NODEDESTABILIZER", "ARCANEENGINEERING", ra, -3, 2, 2, new ItemStack(Item.getItemFromBlock(AEContent.destabilizer))).setPages(pages).setParents("AEFAKE_NODESTABILIZER").registerResearchItem();
         ThaumcraftApi.addWarpToResearch("NODEDESTABILIZER", 4);
         ra = new AspectList().add(Aspect.TOOL, 3).add(Aspect.TREE, 6).add(Aspect.MAGIC, 3).add(Aspect.MECHANISM, 3);
         pages = new ResearchPage[] { new ResearchPage("ArcaneEngineering.research_page.ROD_upgradeable"), new ResearchPage((IRecipe)new ShapedOreRecipe(new ItemStack((Item)IEContent.itemMaterial, 4, 0), new Object[] { "w", "w", 'w', new ItemStack((Block)IEContent.blockTreatedWood, 1, 0) })) };
@@ -66,13 +66,13 @@ public class AEResearch
         newResearch("ENERGIZER", "ARCANEENGINEERING", ra, 1, 6, 3, new ItemStack(AEContent.wandUpgrade, 1, 2)).setPages(pages).setParents("ROD_upgradeable", "PRIMPEARL", "INFUSION").registerResearchItem();
         ThaumcraftApi.addWarpToResearch("ENERGIZER", 3);
         ra = new AspectList();
-        pages = new ResearchPage[] { new ResearchPage("ArcaneEngineering.research_page.IMPULSEBOOTS"), new ResearchPage((IRecipe)new ShapedOreRecipe(new ItemStack(AEContent.impulseBoots, 1), new Object[] { "IFI", "BFB", "C C", 'I', "ingotAluminum", 'F', new ItemStack((Item)IEContent.itemMaterial, 1, 4), 'B', Items.field_151133_ar, 'C', new ItemStack((Item)IEContent.itemMaterial, 1, 12) })) };
+        pages = new ResearchPage[] { new ResearchPage("ArcaneEngineering.research_page.IMPULSEBOOTS"), new ResearchPage((IRecipe)new ShapedOreRecipe(new ItemStack(AEContent.impulseBoots, 1), new Object[] { "IFI", "BFB", "C C", 'I', "ingotAluminum", 'F', new ItemStack((Item)IEContent.itemMaterial, 1, 4), 'B', Items.bucket, 'C', new ItemStack((Item)IEContent.itemMaterial, 1, 12) })) };
         newResearch("IMPULSEBOOTS", "ARCANEENGINEERING", ra, 0, -2, 1, new ItemStack(AEContent.impulseBoots)).setPages(pages).setAutoUnlock().setRound().registerResearchItem();
     }
     
     public static void registerRecipes() {
         AspectList a = new AspectList().add(Aspect.ENTROPY, 50).add(Aspect.AIR, 25);
-        registerArcaneRecipe("NODEDESTABILIZER", new ItemStack(Item.func_150898_a(AEContent.destabilizer)), a, " c ", "isi", "bmb", 'c', ItemApi.getItem("itemResource", 15), 'i', "ingotSteel", 's', ItemApi.getBlock("blockStoneDevice", 9), 'b', ItemApi.getBlock("blockCosmeticSolid", 6), 'm', new ItemStack((Item)IEContent.itemMaterial, 1, 11));
+        registerArcaneRecipe("NODEDESTABILIZER", new ItemStack(Item.getItemFromBlock(AEContent.destabilizer)), a, " c ", "isi", "bmb", 'c', ItemApi.getItem("itemResource", 15), 'i', "ingotSteel", 's', ItemApi.getBlock("blockStoneDevice", 9), 'b', ItemApi.getBlock("blockCosmeticSolid", 6), 'm', new ItemStack((Item)IEContent.itemMaterial, 1, 11));
         a = new AspectList().add(Aspect.EARTH, 20).add(Aspect.ORDER, 20);
         registerArcaneRecipe("DRILLTHAUMIUM", new ItemStack(AEContent.drillHeadThaum, 1, 0), a, "ii ", "bbi", "ii ", 'i', ItemApi.getItem("itemResource", 2), 'b', ItemApi.getBlock("blockCosmeticSolid", 4));
         a = new AspectList().add(Aspect.DARKNESS, 16).add(Aspect.ELDRITCH, 32).add(Aspect.MINE, 8).add(Aspect.METAL, 16);
@@ -82,9 +82,9 @@ public class AEResearch
         a = new AspectList().add(Aspect.ORDER, WandCap.caps.get("electrum").getCraftCost()).add(Aspect.FIRE, WandCap.caps.get("electrum").getCraftCost()).add(Aspect.AIR, WandCap.caps.get("electrum").getCraftCost());
         registerArcaneRecipe("CAP_electrum", new ItemStack(AEContent.wandCap, 1, 1), a, "nnn", "n n", 'n', "nuggetElectrum");
         a = new AspectList().add(Aspect.ORDER, 24).add(Aspect.AIR, 16).add(Aspect.ENTROPY, 16).add(Aspect.FIRE, 8);
-        registerArcaneRecipe("CAPACITOR", new ItemStack(AEContent.wandUpgrade, 1, 0), a, " i ", "gwg", "ifi", 'i', ItemApi.getItem("itemResource", 2), 'g', Blocks.field_150359_w, 'w', ItemApi.getItem("itemWispEssence", 0), 'f', ItemApi.getItem("itemResource", 8));
+        registerArcaneRecipe("CAPACITOR", new ItemStack(AEContent.wandUpgrade, 1, 0), a, " i ", "gwg", "ifi", 'i', ItemApi.getItem("itemResource", 2), 'g', Blocks.glass, 'w', ItemApi.getItem("itemWispEssence", 0), 'f', ItemApi.getItem("itemResource", 8));
         a = new AspectList().add(Aspect.AURA, 24).add(Aspect.CRYSTAL, 24).add(Aspect.GREED, 8).add(Aspect.MAGIC, 32);
-        registerInfusionRecipe("CHARGER", new ItemStack(AEContent.wandUpgrade, 1, 1), 8, a, ItemApi.getBlock("blockMetalDevice", 14), new ItemStack[] { new ItemStack(Items.field_151043_k), new ItemStack(Items.field_151043_k), ItemApi.getItem("itemResource", 8), ItemApi.getItem("itemWispEssence", 0) });
+        registerInfusionRecipe("CHARGER", new ItemStack(AEContent.wandUpgrade, 1, 1), 8, a, ItemApi.getBlock("blockMetalDevice", 14), new ItemStack[] { new ItemStack(Items.gold_ingot), new ItemStack(Items.gold_ingot), ItemApi.getItem("itemResource", 8), ItemApi.getItem("itemWispEssence", 0) });
         a = new AspectList().add(Aspect.MAGIC, 24).add(Aspect.ENERGY, 32).add(Aspect.ELDRITCH, 16).add(Aspect.MECHANISM, 16);
         registerInfusionRecipe("ENERGIZER", new ItemStack(AEContent.wandUpgrade, 1, 2), 8, a, ItemApi.getItem("itemResource", 15), new ItemStack[] { new ItemStack((Item)IEContent.itemMaterial, 1, 12), new ItemStack((Item)IEContent.itemMaterial, 1, 12) });
     }

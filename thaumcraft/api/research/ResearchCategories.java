@@ -14,7 +14,7 @@ public class ResearchCategories
     }
     
     public static String getCategoryName(final String key) {
-        return StatCollector.func_74838_a("tc.research_category." + key);
+        return StatCollector.translateToLocal("tc.research_category." + key);
     }
     
     public static ResearchItem getResearch(final String key) {

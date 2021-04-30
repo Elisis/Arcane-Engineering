@@ -13,19 +13,19 @@ public class ItemWandUpgrade extends AEItem implements IUpgrade
     
     public void applyUpgrades(final ItemStack target, final ItemStack upgrade, final HashMap<String, Object> modifications) {
         Integer mod = 0;
-        if (upgrade.func_77960_j() == 0) {
+        if (upgrade.getMetadata() == 0) {
             if (modifications.get("capacitors") != null) {
                 mod = modifications.get("capacitors");
             }
             modifications.put("capacitors", mod + 1);
         }
-        else if (upgrade.func_77960_j() == 1) {
+        else if (upgrade.getMetadata() == 1) {
             if (modifications.get("chargers") != null) {
                 mod = modifications.get("chargers");
             }
             modifications.put("chargers", mod + 1);
         }
-        else if (upgrade.func_77960_j() == 2) {
+        else if (upgrade.getMetadata() == 2) {
             if (modifications.get("energizers") != null) {
                 mod = modifications.get("energizers");
             }

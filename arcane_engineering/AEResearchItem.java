@@ -17,11 +17,11 @@ public class AEResearchItem extends ResearchItem
     
     @Override
     public String getName() {
-        return StatCollector.func_74838_a("ArcaneEngineering.research_name." + this.key);
+        return StatCollector.translateToLocal("ArcaneEngineering.research_name." + this.key);
     }
     
     @Override
     public String getText() {
-        return StatCollector.func_74838_a("ArcaneEngineering.research_text." + this.key);
+        return StatCollector.translateToLocal("ArcaneEngineering.research_text." + this.key);
     }
 }

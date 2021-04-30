@@ -41,11 +41,11 @@ public class FocusUpgradeType
     }
     
     public String getLocalizedName() {
-        return StatCollector.func_74838_a(this.name);
+        return StatCollector.translateToLocal(this.name);
     }
     
     public String getLocalizedText() {
-        return StatCollector.func_74838_a(this.text);
+        return StatCollector.translateToLocal(this.text);
     }
     
     @Override

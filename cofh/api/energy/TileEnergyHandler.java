@@ -12,13 +12,13 @@ public class TileEnergyHandler extends TileEntity implements IEnergyHandler
         this.storage = new EnergyStorage(32000);
     }
     
-    public void func_145839_a(final NBTTagCompound nbt) {
-        super.func_145839_a(nbt);
+    public void readFromNBT(final NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
         this.storage.readFromNBT(nbt);
     }
     
-    public void func_145841_b(final NBTTagCompound nbt) {
-        super.func_145841_b(nbt);
+    public void writeToNBT(final NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
         this.storage.writeToNBT(nbt);
     }
     

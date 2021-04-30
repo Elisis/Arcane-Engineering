@@ -23,8 +23,8 @@ public class ItemImpulseBoots extends ItemArmor implements IFluidContainerItem
     
     public ItemImpulseBoots() {
         super(AEContent.MECH, 0, 3);
-        this.func_77655_b("ArcaneEngineering.impulse_boots");
-        this.func_77637_a(ArcaneEngineering.tabArcaneEngineering);
+        this.setUnlocalizedName("ArcaneEngineering.impulse_boots");
+        this.setCreativeTab(ArcaneEngineering.tabArcaneEngineering);
         GameRegistry.registerItem((Item)this, "impulse_boots");
     }
     
@@ -33,53 +33,53 @@ public class ItemImpulseBoots extends ItemArmor implements IFluidContainerItem
     }
     
     @SideOnly(Side.CLIENT)
-    public void func_94581_a(final IIconRegister ir) {
-        this.icon = ir.func_94245_a("arcane_engineering:impulse_boots");
+    public void registerIcons(final IIconRegister ir) {
+        this.icon = ir.registerIcon("arcane_engineering:impulse_boots");
     }
     
-    public IIcon func_77617_a(final int meta) {
+    public IIcon getIconFromDamage(final int meta) {
         return this.icon;
     }
     
     @SideOnly(Side.CLIENT)
     public void onArmorTick(final World world, final EntityPlayer player, final ItemStack itemStack) {
-        if (GameSettings.func_100015_a(Minecraft.func_71410_x().field_71474_y.field_74314_A) && this.getFluid(itemStack) != null && this.getFluid(itemStack).amount > 0 && !player.func_70090_H()) {
-            if (GameSettings.func_100015_a(Minecraft.func_71410_x().field_71474_y.field_74311_E)) {
-                if (player.field_70181_x > -0.25 && player.field_70181_x < 0.2) {
-                    player.field_70181_x = 0.0;
+        if (GameSettings.isKeyDown(Minecraft.getMinecraft().gameSettings.keyBindJump) && this.getFluid(itemStack) != null && this.getFluid(itemStack).amount > 0 && !player.isInWater()) {
+            if (GameSettings.isKeyDown(Minecraft.getMinecraft().gameSettings.keyBindSneak)) {
+                if (player.motionY > -0.25 && player.motionY < 0.2) {
+                    player.motionY = 0.0;
                 }
-                else if (player.field_70181_x < 0.0) {
-                    player.field_70181_x *= 0.7;
+                else if (player.motionY < 0.0) {
+                    player.motionY *= 0.7;
                 }
             }
-            else if (player.field_70181_x < -0.9) {
-                player.field_70181_x *= 0.6;
+            else if (player.motionY < -0.9) {
+                player.motionY *= 0.6;
             }
             else {
-                player.field_70181_x += 0.1;
+                player.motionY += 0.1;
             }
-            if (player.field_70181_x > -0.6) {
+            if (player.motionY > -0.6) {
                 ArcaneEngineering.network.sendToServer((IMessage)new FallDamageMessage());
             }
-            final World worldObj = player.field_70170_p;
+            final World worldObj = player.worldObj;
             final Random rand = new Random();
-            if (worldObj.field_72995_K) {
+            if (worldObj.isRemote) {
                 final double motionX = rand.nextGaussian() * 0.02;
                 final double motionY = rand.nextGaussian() * -0.2 - 0.3;
                 final double motionZ = rand.nextGaussian() * 0.02;
             }
-            ArcaneEngineering.network.sendToServer((IMessage)new BootParticleMessage(player.field_70165_t, player.field_70163_u, player.field_70161_v));
+            ArcaneEngineering.network.sendToServer((IMessage)new BootParticleMessage(player.posX, player.posY, player.posZ));
             this.drain(itemStack, 1, rand.nextBoolean());
         }
     }
     
-    public void func_77624_a(final ItemStack stack, final EntityPlayer player, final List list, final boolean adv) {
+    public void addInformation(final ItemStack stack, final EntityPlayer player, final List list, final boolean adv) {
         final FluidStack fs = this.getFluid(stack);
         if (fs != null) {
-            list.add(StatCollector.func_74838_a("desc.ImmersiveEngineering.flavour.drill.fuel") + " " + fs.amount + "/" + this.getCapacity(stack) + "mB");
+            list.add(StatCollector.translateToLocal("desc.ImmersiveEngineering.flavour.drill.fuel") + " " + fs.amount + "/" + this.getCapacity(stack) + "mB");
         }
         else {
-            list.add(StatCollector.func_74838_a("desc.ImmersiveEngineering.flavour.drill.fuel") + " 0/" + this.getCapacity(stack) + "mB");
+            list.add(StatCollector.translateToLocal("desc.ImmersiveEngineering.flavour.drill.fuel") + " 0/" + this.getCapacity(stack) + "mB");
         }
     }
     

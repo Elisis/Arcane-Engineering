@@ -19,9 +19,9 @@ public class BlockCoordinates implements Comparable
     }
     
     public BlockCoordinates(final TileEntity tile) {
-        this.x = tile.field_145851_c;
-        this.y = tile.field_145848_d;
-        this.z = tile.field_145849_e;
+        this.x = tile.xCoord;
+        this.y = tile.yCoord;
+        this.z = tile.zCoord;
     }
     
     public BlockCoordinates(final BlockCoordinates par1ChunkCoordinates) {
@@ -71,14 +71,14 @@ public class BlockCoordinates implements Comparable
     }
     
     public void readNBT(final NBTTagCompound nbt) {
-        this.x = nbt.func_74762_e("b_x");
-        this.y = nbt.func_74762_e("b_y");
-        this.z = nbt.func_74762_e("b_z");
+        this.x = nbt.getInteger("b_x");
+        this.y = nbt.getInteger("b_y");
+        this.z = nbt.getInteger("b_z");
     }
     
     public void writeNBT(final NBTTagCompound nbt) {
-        nbt.func_74768_a("b_x", this.x);
-        nbt.func_74768_a("b_y", this.y);
-        nbt.func_74768_a("b_z", this.z);
+        nbt.setInteger("b_x", this.x);
+        nbt.setInteger("b_y", this.y);
+        nbt.setInteger("b_z", this.z);
     }
 }

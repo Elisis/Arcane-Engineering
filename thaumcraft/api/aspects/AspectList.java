@@ -178,48 +178,48 @@ public class AspectList implements Serializable
     
     public void readFromNBT(final NBTTagCompound nbttagcompound) {
         this.aspects.clear();
-        final NBTTagList tlist = nbttagcompound.func_150295_c("Aspects", 10);
-        for (int j = 0; j < tlist.func_74745_c(); ++j) {
-            final NBTTagCompound rs = tlist.func_150305_b(j);
-            if (rs.func_74764_b("key")) {
-                this.add(Aspect.getAspect(rs.func_74779_i("key")), rs.func_74762_e("amount"));
+        final NBTTagList tlist = nbttagcompound.getTagList("Aspects", 10);
+        for (int j = 0; j < tlist.tagCount(); ++j) {
+            final NBTTagCompound rs = tlist.getCompoundTagAt(j);
+            if (rs.hasKey("key")) {
+                this.add(Aspect.getAspect(rs.getString("key")), rs.getInteger("amount"));
             }
         }
     }
     
     public void readFromNBT(final NBTTagCompound nbttagcompound, final String label) {
         this.aspects.clear();
-        final NBTTagList tlist = nbttagcompound.func_150295_c(label, 10);
-        for (int j = 0; j < tlist.func_74745_c(); ++j) {
-            final NBTTagCompound rs = tlist.func_150305_b(j);
-            if (rs.func_74764_b("key")) {
-                this.add(Aspect.getAspect(rs.func_74779_i("key")), rs.func_74762_e("amount"));
+        final NBTTagList tlist = nbttagcompound.getTagList(label, 10);
+        for (int j = 0; j < tlist.tagCount(); ++j) {
+            final NBTTagCompound rs = tlist.getCompoundTagAt(j);
+            if (rs.hasKey("key")) {
+                this.add(Aspect.getAspect(rs.getString("key")), rs.getInteger("amount"));
             }
         }
     }
     
     public void writeToNBT(final NBTTagCompound nbttagcompound) {
         final NBTTagList tlist = new NBTTagList();
-        nbttagcompound.func_74782_a("Aspects", (NBTBase)tlist);
+        nbttagcompound.setTag("Aspects", (NBTBase)tlist);
         for (final Aspect aspect : this.getAspects()) {
             if (aspect != null) {
                 final NBTTagCompound f = new NBTTagCompound();
-                f.func_74778_a("key", aspect.getTag());
-                f.func_74768_a("amount", this.getAmount(aspect));
-                tlist.func_74742_a((NBTBase)f);
+                f.setString("key", aspect.getTag());
+                f.setInteger("amount", this.getAmount(aspect));
+                tlist.appendTag((NBTBase)f);
             }
         }
     }
     
     public void writeToNBT(final NBTTagCompound nbttagcompound, final String label) {
         final NBTTagList tlist = new NBTTagList();
-        nbttagcompound.func_74782_a(label, (NBTBase)tlist);
+        nbttagcompound.setTag(label, (NBTBase)tlist);
         for (final Aspect aspect : this.getAspects()) {
             if (aspect != null) {
                 final NBTTagCompound f = new NBTTagCompound();
-                f.func_74778_a("key", aspect.getTag());
-                f.func_74768_a("amount", this.getAmount(aspect));
-                tlist.func_74742_a((NBTBase)f);
+                f.setString("key", aspect.getTag());
+                f.setInteger("amount", this.getAmount(aspect));
+                tlist.appendTag((NBTBase)f);
             }
         }
     }

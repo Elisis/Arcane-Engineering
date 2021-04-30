@@ -18,38 +18,38 @@ public class PotionFluxTaint extends Potion
     public PotionFluxTaint(final int par1, final boolean par2, final int par3) {
         super(par1, par2, par3);
         this.statusIconIndex = -1;
-        this.func_76399_b(0, 0);
+        this.setIconIndex(0, 0);
     }
     
     public static void init() {
-        PotionFluxTaint.instance.func_76390_b("potion.fluxtaint");
-        PotionFluxTaint.instance.func_76399_b(3, 1);
-        PotionFluxTaint.instance.func_76404_a(0.25);
+        PotionFluxTaint.instance.setPotionName("potion.fluxtaint");
+        PotionFluxTaint.instance.setIconIndex(3, 1);
+        PotionFluxTaint.instance.setEffectiveness(0.25);
     }
     
-    public boolean func_76398_f() {
+    public boolean isBadEffect() {
         return true;
     }
     
     @SideOnly(Side.CLIENT)
-    public int func_76392_e() {
-        Minecraft.func_71410_x().field_71446_o.func_110577_a(PotionFluxTaint.rl);
-        return super.func_76392_e();
+    public int getStatusIconIndex() {
+        Minecraft.getMinecraft().renderEngine.bindTexture(PotionFluxTaint.rl);
+        return super.getStatusIconIndex();
     }
     
-    public void func_76394_a(final EntityLivingBase target, final int par2) {
+    public void performEffect(final EntityLivingBase target, final int par2) {
         if (target instanceof ITaintedMob) {
-            target.func_70691_i(1.0f);
+            target.heal(1.0f);
         }
-        else if (!target.func_70662_br() && !(target instanceof EntityPlayer)) {
-            target.func_70097_a(DamageSourceThaumcraft.taint, 1.0f);
+        else if (!target.isEntityUndead() && !(target instanceof EntityPlayer)) {
+            target.attackEntityFrom(DamageSourceThaumcraft.taint, 1.0f);
         }
-        else if (!target.func_70662_br() && (target.func_110138_aP() > 1.0f || target instanceof EntityPlayer)) {
-            target.func_70097_a(DamageSourceThaumcraft.taint, 1.0f);
+        else if (!target.isEntityUndead() && (target.getMaxHealth() > 1.0f || target instanceof EntityPlayer)) {
+            target.attackEntityFrom(DamageSourceThaumcraft.taint, 1.0f);
         }
     }
     
-    public boolean func_76397_a(final int par1, final int par2) {
+    public boolean isReady(final int par1, final int par2) {
         final int k = 40 >> par2;
         return k <= 0 || par1 % k == 0;
     }

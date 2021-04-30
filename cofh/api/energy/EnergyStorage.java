@@ -24,7 +24,7 @@ public class EnergyStorage implements IEnergyStorage
     }
     
     public EnergyStorage readFromNBT(final NBTTagCompound nbt) {
-        this.energy = nbt.func_74762_e("Energy");
+        this.energy = nbt.getInteger("Energy");
         if (this.energy > this.capacity) {
             this.energy = this.capacity;
         }
@@ -35,7 +35,7 @@ public class EnergyStorage implements IEnergyStorage
         if (this.energy < 0) {
             this.energy = 0;
         }
-        nbt.func_74768_a("Energy", this.energy);
+        nbt.setInteger("Energy", this.energy);
         return nbt;
     }
     

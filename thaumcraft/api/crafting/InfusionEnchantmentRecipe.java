@@ -24,37 +24,37 @@ public class InfusionEnchantmentRecipe
         this.aspects = aspects2;
         this.components = recipe;
         this.instability = inst;
-        this.recipeXP = Math.max(1, input.func_77321_a(1) / 3);
+        this.recipeXP = Math.max(1, input.getMinEnchantability(1) / 3);
     }
     
     public boolean matches(final ArrayList<ItemStack> input, final ItemStack central, final World world, final EntityPlayer player) {
-        if (this.research.length() > 0 && !ThaumcraftApiHelper.isResearchComplete(player.func_70005_c_(), this.research)) {
+        if (this.research.length() > 0 && !ThaumcraftApiHelper.isResearchComplete(player.getCommandSenderName(), this.research)) {
             return false;
         }
-        if (!this.enchantment.func_92089_a(central) || !central.func_77973_b().func_77616_k(central)) {
+        if (!this.enchantment.canApply(central) || !central.getItem().isItemTool(central)) {
             return false;
         }
-        final Map map1 = EnchantmentHelper.func_82781_a(central);
+        final Map map1 = EnchantmentHelper.getEnchantments(central);
         for (final int j1 : map1.keySet()) {
-            final Enchantment ench = Enchantment.field_77331_b[j1];
-            if (j1 == this.enchantment.field_77352_x && EnchantmentHelper.func_77506_a(j1, central) >= ench.func_77325_b()) {
+            final Enchantment ench = Enchantment.enchantmentsList[j1];
+            if (j1 == this.enchantment.effectId && EnchantmentHelper.getEnchantmentLevel(j1, central) >= ench.getMaxLevel()) {
                 return false;
             }
-            if (this.enchantment.field_77352_x != ench.field_77352_x && (!this.enchantment.func_77326_a(ench) || !ench.func_77326_a(this.enchantment))) {
+            if (this.enchantment.effectId != ench.effectId && (!this.enchantment.canApplyTogether(ench) || !ench.canApplyTogether(this.enchantment))) {
                 return false;
             }
         }
         ItemStack i2 = null;
         final ArrayList<ItemStack> ii = new ArrayList<ItemStack>();
         for (final ItemStack is : input) {
-            ii.add(is.func_77946_l());
+            ii.add(is.copy());
         }
         for (final ItemStack comp : this.components) {
             boolean b = false;
             for (int a = 0; a < ii.size(); ++a) {
-                i2 = ii.get(a).func_77946_l();
-                if (comp.func_77960_j() == 32767) {
-                    i2.func_77964_b(32767);
+                i2 = ii.get(a).copy();
+                if (comp.getMetadata() == 32767) {
+                    i2.setMetadata(32767);
                 }
                 if (this.areItemStacksEqual(i2, comp, true)) {
                     ii.remove(a);
@@ -92,7 +92,7 @@ public class InfusionEnchantmentRecipe
                 }
             }
         }
-        return stack0.func_77973_b() == stack1.func_77973_b() && stack0.func_77960_j() == stack1.func_77960_j() && stack0.field_77994_a <= stack0.func_77976_d();
+        return stack0.getItem() == stack1.getItem() && stack0.getMetadata() == stack1.getMetadata() && stack0.stackSize <= stack0.getMaxStackSize();
     }
     
     public Enchantment getEnchantment() {
@@ -109,23 +109,23 @@ public class InfusionEnchantmentRecipe
     
     public int calcInstability(final ItemStack recipeInput) {
         int i = 0;
-        final Map map1 = EnchantmentHelper.func_82781_a(recipeInput);
+        final Map map1 = EnchantmentHelper.getEnchantments(recipeInput);
         for (final int j1 : map1.keySet()) {
-            i += EnchantmentHelper.func_77506_a(j1, recipeInput);
+            i += EnchantmentHelper.getEnchantmentLevel(j1, recipeInput);
         }
         return i / 2 + this.instability;
     }
     
     public int calcXP(final ItemStack recipeInput) {
-        return this.recipeXP * (1 + EnchantmentHelper.func_77506_a(this.enchantment.field_77352_x, recipeInput));
+        return this.recipeXP * (1 + EnchantmentHelper.getEnchantmentLevel(this.enchantment.effectId, recipeInput));
     }
     
     public float getEssentiaMod(final ItemStack recipeInput) {
-        float mod = (float)EnchantmentHelper.func_77506_a(this.enchantment.field_77352_x, recipeInput);
-        final Map map1 = EnchantmentHelper.func_82781_a(recipeInput);
+        float mod = (float)EnchantmentHelper.getEnchantmentLevel(this.enchantment.effectId, recipeInput);
+        final Map map1 = EnchantmentHelper.getEnchantments(recipeInput);
         for (final int j1 : map1.keySet()) {
-            if (j1 != this.enchantment.field_77352_x) {
-                mod += EnchantmentHelper.func_77506_a(j1, recipeInput) * 0.1f;
+            if (j1 != this.enchantment.effectId) {
+                mod += EnchantmentHelper.getEnchantmentLevel(j1, recipeInput) * 0.1f;
             }
         }
         return mod;

@@ -54,19 +54,19 @@ public abstract class TileVisNode extends TileThaumcraft
         this.setParent(null);
         this.parentChanged();
         if (this.isSource()) {
-            HashMap<WorldCoordinates, WeakReference<TileVisNode>> sourcelist = VisNetHandler.sources.get(this.field_145850_b.field_73011_w.field_76574_g);
+            HashMap<WorldCoordinates, WeakReference<TileVisNode>> sourcelist = VisNetHandler.sources.get(this.worldObj.provider.dimensionId);
             if (sourcelist == null) {
                 sourcelist = new HashMap<WorldCoordinates, WeakReference<TileVisNode>>();
             }
             sourcelist.remove(this.getLocation());
-            VisNetHandler.sources.put(this.field_145850_b.field_73011_w.field_76574_g, sourcelist);
+            VisNetHandler.sources.put(this.worldObj.provider.dimensionId, sourcelist);
         }
-        this.field_145850_b.func_147471_g(this.field_145851_c, this.field_145848_d, this.field_145849_e);
+        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
     }
     
-    public void func_145843_s() {
+    public void invalidate() {
         this.removeThisNode();
-        super.func_145843_s();
+        super.invalidate();
     }
     
     public void triggerConsumeEffect(final Aspect aspect) {
@@ -92,8 +92,8 @@ public abstract class TileVisNode extends TileThaumcraft
         return true;
     }
     
-    public void func_145845_h() {
-        if (!this.field_145850_b.field_72995_K && (this.nodeCounter++ % 40 == 0 || this.nodeRefresh)) {
+    public void updateEntity() {
+        if (!this.worldObj.isRemote && (this.nodeCounter++ % 40 == 0 || this.nodeRefresh)) {
             if (!this.nodeRefresh && this.children.size() > 0) {
                 for (final WeakReference<TileVisNode> n : this.children) {
                     if (n == null || n.get() == null || !VisNetHandler.canNodeBeSeen(this, n.get())) {
@@ -112,15 +112,15 @@ public abstract class TileVisNode extends TileThaumcraft
                 this.parent = null;
             }
             if (this.isSource() && !this.nodeRegged) {
-                VisNetHandler.addSource(this.func_145831_w(), this);
+                VisNetHandler.addSource(this.getWorld(), this);
                 this.nodeRegged = true;
             }
             else if (!this.isSource() && !VisNetHandler.isNodeValid(this.getParent())) {
-                this.setParent(VisNetHandler.addNode(this.func_145831_w(), this));
+                this.setParent(VisNetHandler.addNode(this.getWorld(), this));
                 this.nodeRefresh = true;
             }
             if (this.nodeRefresh) {
-                this.field_145850_b.func_147471_g(this.field_145851_c, this.field_145848_d, this.field_145849_e);
+                this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
                 this.parentChanged();
             }
             this.nodeRefresh = false;

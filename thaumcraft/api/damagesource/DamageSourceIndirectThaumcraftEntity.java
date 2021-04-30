@@ -13,12 +13,12 @@ public class DamageSourceIndirectThaumcraftEntity extends EntityDamageSourceIndi
         super(par1Str, par2Entity, par3Entity);
     }
     
-    public DamageSource func_76361_j() {
+    public DamageSource setFireDamage() {
         this.fireDamage = true;
         return (DamageSource)this;
     }
     
-    public DamageSource func_76348_h() {
+    public DamageSource setDamageBypassesArmor() {
         this.isUnblockable = true;
         this.hungerDamage = 0.0f;
         return (DamageSource)this;

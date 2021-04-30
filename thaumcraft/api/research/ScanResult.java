@@ -29,7 +29,7 @@ public class ScanResult
             if (this.type == 1 && (this.id != sr.id || this.meta != sr.meta)) {
                 return false;
             }
-            if (this.type == 2 && this.entity.func_145782_y() != sr.entity.func_145782_y()) {
+            if (this.type == 2 && this.entity.getEntityId() != sr.entity.getEntityId()) {
                 return false;
             }
             if (this.type == 3 && !this.phenomena.equals(sr.phenomena)) {

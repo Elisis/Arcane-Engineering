@@ -37,7 +37,7 @@ public class ShapedArcaneRecipe implements IArcaneRecipe
         this.width = 0;
         this.height = 0;
         this.mirrored = true;
-        this.output = result.func_77946_l();
+        this.output = result.copy();
         this.research = research;
         this.aspects = aspects;
         String shape = "";
@@ -81,7 +81,7 @@ public class ShapedArcaneRecipe implements IArcaneRecipe
             final Character chr = (Character)recipe[idx];
             final Object in = recipe[idx + 1];
             if (in instanceof ItemStack) {
-                itemMap.put(chr, ((ItemStack)in).func_77946_l());
+                itemMap.put(chr, ((ItemStack)in).copy());
             }
             else if (in instanceof Item) {
                 itemMap.put(chr, new ItemStack((Item)in));
@@ -111,7 +111,7 @@ public class ShapedArcaneRecipe implements IArcaneRecipe
     
     @Override
     public ItemStack getCraftingResult(final IInventory var1) {
-        return this.output.func_77946_l();
+        return this.output.copy();
     }
     
     @Override
@@ -126,7 +126,7 @@ public class ShapedArcaneRecipe implements IArcaneRecipe
     
     @Override
     public boolean matches(final IInventory inv, final World world, final EntityPlayer player) {
-        if (this.research.length() > 0 && !ThaumcraftApiHelper.isResearchComplete(player.func_70005_c_(), this.research)) {
+        if (this.research.length() > 0 && !ThaumcraftApiHelper.isResearchComplete(player.getCommandSenderName(), this.research)) {
             return false;
         }
         for (int x = 0; x <= 3 - this.width; ++x) {
@@ -180,7 +180,7 @@ public class ShapedArcaneRecipe implements IArcaneRecipe
     }
     
     private boolean checkItemEquals(final ItemStack target, final ItemStack input) {
-        return (input != null || target == null) && (input == null || target != null) && target.func_77973_b() == input.func_77973_b() && (!target.func_77942_o() || ThaumcraftApiHelper.areItemStackTagsEqualForCrafting(input, target)) && (target.func_77960_j() == 32767 || target.func_77960_j() == input.func_77960_j());
+        return (input != null || target == null) && (input == null || target != null) && target.getItem() == input.getItem() && (!target.hasTagCompound() || ThaumcraftApiHelper.areItemStackTagsEqualForCrafting(input, target)) && (target.getMetadata() == 32767 || target.getMetadata() == input.getMetadata());
     }
     
     public ShapedArcaneRecipe setMirrored(final boolean mirror) {

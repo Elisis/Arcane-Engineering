@@ -14,27 +14,27 @@ public abstract class AEBlockContainer extends BlockContainer
     public AEBlockContainer(final Material material, final String name) {
         super(material);
         this.name = name;
-        this.func_149663_c("ArcaneEngineering." + name);
+        this.setUnlocalizedName("ArcaneEngineering." + name);
         GameRegistry.registerBlock((Block)this, name);
-        this.func_149658_d("arcane_engineering:" + name);
-        this.func_149647_a(ArcaneEngineering.tabArcaneEngineering);
+        this.setTextureName("arcane_engineering:" + name);
+        this.setCreativeTab(ArcaneEngineering.tabArcaneEngineering);
     }
     
-    public int func_149692_a(final int meta) {
+    public int damageDropped(final int meta) {
         return meta;
     }
     
-    public boolean func_149662_c() {
+    public boolean isOpaqueCube() {
         return false;
     }
     
-    public boolean func_149686_d() {
+    public boolean renderAsNormalBlock() {
         return false;
     }
     
-    public int func_149645_b() {
+    public int getRenderType() {
         return -1;
     }
     
-    public abstract TileEntity func_149915_a(final World p0, final int p1);
+    public abstract TileEntity createNewTileEntity(final World p0, final int p1);
 }

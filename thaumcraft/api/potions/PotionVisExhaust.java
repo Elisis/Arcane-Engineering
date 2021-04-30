@@ -15,26 +15,26 @@ public class PotionVisExhaust extends Potion
     public PotionVisExhaust(final int par1, final boolean par2, final int par3) {
         super(par1, par2, par3);
         this.statusIconIndex = -1;
-        this.func_76399_b(0, 0);
+        this.setIconIndex(0, 0);
     }
     
     public static void init() {
-        PotionVisExhaust.instance.func_76390_b("potion.visexhaust");
-        PotionVisExhaust.instance.func_76399_b(5, 1);
-        PotionVisExhaust.instance.func_76404_a(0.25);
+        PotionVisExhaust.instance.setPotionName("potion.visexhaust");
+        PotionVisExhaust.instance.setIconIndex(5, 1);
+        PotionVisExhaust.instance.setEffectiveness(0.25);
     }
     
-    public boolean func_76398_f() {
+    public boolean isBadEffect() {
         return true;
     }
     
     @SideOnly(Side.CLIENT)
-    public int func_76392_e() {
-        Minecraft.func_71410_x().field_71446_o.func_110577_a(PotionVisExhaust.rl);
-        return super.func_76392_e();
+    public int getStatusIconIndex() {
+        Minecraft.getMinecraft().renderEngine.bindTexture(PotionVisExhaust.rl);
+        return super.getStatusIconIndex();
     }
     
-    public void func_76394_a(final EntityLivingBase target, final int par2) {
+    public void performEffect(final EntityLivingBase target, final int par2) {
     }
     
     static {

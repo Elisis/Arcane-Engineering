@@ -52,7 +52,7 @@ public class ResearchPage
         this.recipeOutput = null;
         this.type = PageType.NORMAL_CRAFTING;
         this.recipe = recipe;
-        this.recipeOutput = recipe.func_77571_b();
+        this.recipeOutput = recipe.getRecipeOutput();
     }
     
     public ResearchPage(final IRecipe[] recipe) {
@@ -151,7 +151,7 @@ public class ResearchPage
         this.recipeOutput = null;
         this.type = PageType.SMELTING;
         this.recipe = input;
-        this.recipeOutput = FurnaceRecipes.func_77602_a().func_151395_a(input);
+        this.recipeOutput = FurnaceRecipes.instance().getSmeltingResult(input);
     }
     
     public ResearchPage(final InfusionRecipe recipe) {
@@ -212,7 +212,7 @@ public class ResearchPage
     public String getTranslatedText() {
         String ret = "";
         if (this.text != null) {
-            ret = StatCollector.func_74838_a(this.text);
+            ret = StatCollector.translateToLocal(this.text);
             if (ret.isEmpty()) {
                 ret = this.text;
             }

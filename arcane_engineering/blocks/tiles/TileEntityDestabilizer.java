@@ -31,12 +31,12 @@ public class TileEntityDestabilizer extends TileEntity implements IEnergyReceive
     }
     
     public int receiveEnergy(final ForgeDirection from, final int maxReceive, final boolean simulate) {
-        if (this.field_145850_b.field_72995_K) {
+        if (this.worldObj.isRemote) {
             return 0;
         }
         final int r = this.energyStorage.receiveEnergy(maxReceive, simulate);
-        this.field_145850_b.func_147471_g(this.field_145851_c, this.field_145848_d, this.field_145849_e);
-        this.func_70296_d();
+        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+        this.markDirty();
         return r;
     }
     
@@ -48,38 +48,38 @@ public class TileEntityDestabilizer extends TileEntity implements IEnergyReceive
         return this.energyStorage.getMaxEnergyStored();
     }
     
-    public Packet func_145844_m() {
+    public Packet getDescriptionPacket() {
         final NBTTagCompound tag = new NBTTagCompound();
-        this.func_145841_b(tag);
-        return (Packet)new S35PacketUpdateTileEntity(this.field_145851_c, this.field_145848_d, this.field_145849_e, 4, tag);
+        this.writeToNBT(tag);
+        return (Packet)new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 4, tag);
     }
     
-    public void func_145841_b(final NBTTagCompound tag) {
-        super.func_145841_b(tag);
+    public void writeToNBT(final NBTTagCompound tag) {
+        super.writeToNBT(tag);
         this.energyStorage.writeToNBT(tag);
-        tag.func_74757_a("open", this.open);
-        tag.func_74780_a("rotationSpeed", this.rotationSpeed);
+        tag.setBoolean("open", this.open);
+        tag.setDouble("rotationSpeed", this.rotationSpeed);
     }
     
-    public void func_145839_a(final NBTTagCompound nbt) {
-        super.func_145839_a(nbt);
+    public void readFromNBT(final NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
         this.energyStorage.readFromNBT(nbt);
-        this.open = nbt.func_74767_n("open");
-        this.rotationSpeed = nbt.func_74769_h("rotationSpeed");
+        this.open = nbt.getBoolean("open");
+        this.rotationSpeed = nbt.getDouble("rotationSpeed");
     }
     
     public void onDataPacket(final NetworkManager net, final S35PacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
-        this.func_145839_a(pkt.func_148857_g());
+        this.readFromNBT(pkt.getNbtCompound());
     }
     
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
-        final AxisAlignedBB aabb = AxisAlignedBB.func_72330_a(this.field_145851_c - 0.1, (double)this.field_145848_d, this.field_145849_e - 0.1, this.field_145851_c + 1.1, this.field_145848_d + 1.1, this.field_145849_e + 1.1);
+        final AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(this.xCoord - 0.1, (double)this.yCoord, this.zCoord - 0.1, this.xCoord + 1.1, this.yCoord + 1.1, this.zCoord + 1.1);
         return aabb;
     }
     
-    public void func_145845_h() {
+    public void updateEntity() {
         if (!this.open) {
             if (this.energyStorage.getEnergyStored() >= 100 && !this.open) {
                 this.rotationSpeed = Math.pow(this.energyStorage.getEnergyStored() / (double)this.energyStorage.getMaxEnergyStored(), 2.5) * 24.0;
@@ -91,31 +91,31 @@ public class TileEntityDestabilizer extends TileEntity implements IEnergyReceive
                 this.rotationSpeed = 0.0;
                 this.rotationAngle = 0.0;
             }
-            if (this.energyStorage.getEnergyStored() == this.energyStorage.getMaxEnergyStored() && this.field_145850_b.func_147438_o(this.field_145851_c, this.field_145848_d + 1, this.field_145849_e) instanceof INode) {
+            if (this.energyStorage.getEnergyStored() == this.energyStorage.getMaxEnergyStored() && this.worldObj.getTileEntity(this.xCoord, this.yCoord + 1, this.zCoord) instanceof INode) {
                 this.open = true;
-                ((INode)this.field_145850_b.func_147438_o(this.field_145851_c, this.field_145848_d + 1, this.field_145849_e)).setNodeType(NodeType.HUNGRY);
-                this.field_145850_b.func_72908_a((double)(this.field_145851_c + 0.5f), (double)(this.field_145848_d + 0.5f), (double)(this.field_145849_e + 0.5f), "thaumcraft:runicShieldCharge", 1.0f, 1.0f);
+                ((INode)this.worldObj.getTileEntity(this.xCoord, this.yCoord + 1, this.zCoord)).setNodeType(NodeType.HUNGRY);
+                this.worldObj.playSoundEffect((double)(this.xCoord + 0.5f), (double)(this.yCoord + 0.5f), (double)(this.zCoord + 0.5f), "thaumcraft:runicShieldCharge", 1.0f, 1.0f);
                 this.energyStorage.setEnergyStored(0);
-                this.field_145850_b.func_147471_g(this.field_145851_c, this.field_145848_d + 1, this.field_145849_e);
+                this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord + 1, this.zCoord);
             }
         }
-        else if (this.energyStorage.getEnergyStored() >= 100 && this.field_145850_b.func_147438_o(this.field_145851_c, this.field_145848_d + 1, this.field_145849_e) instanceof INode) {
+        else if (this.energyStorage.getEnergyStored() >= 100 && this.worldObj.getTileEntity(this.xCoord, this.yCoord + 1, this.zCoord) instanceof INode) {
             this.energyStorage.extractEnergy(100, false);
         }
-        else if (this.field_145850_b.func_147438_o(this.field_145851_c, this.field_145848_d + 1, this.field_145849_e) instanceof INode) {
+        else if (this.worldObj.getTileEntity(this.xCoord, this.yCoord + 1, this.zCoord) instanceof INode) {
             this.open = false;
             if (Math.random() < 0.75) {
-                ((INode)this.field_145850_b.func_147438_o(this.field_145851_c, this.field_145848_d + 1, this.field_145849_e)).setNodeType(NodeType.NORMAL);
-                this.field_145850_b.func_72908_a((double)(this.field_145851_c + 0.5f), (double)(this.field_145848_d + 0.5f), (double)(this.field_145849_e + 0.5f), "thaumcraft:craftfail", 1.0f, 1.0f);
+                ((INode)this.worldObj.getTileEntity(this.xCoord, this.yCoord + 1, this.zCoord)).setNodeType(NodeType.NORMAL);
+                this.worldObj.playSoundEffect((double)(this.xCoord + 0.5f), (double)(this.yCoord + 0.5f), (double)(this.zCoord + 0.5f), "thaumcraft:craftfail", 1.0f, 1.0f);
             }
             else {
                 final AspectList aspects = new AspectList().add(Aspect.TAINT, 1);
-                ((INode)this.field_145850_b.func_147438_o(this.field_145851_c, this.field_145848_d + 1, this.field_145849_e)).setAspects(aspects);
-                ((INode)this.field_145850_b.func_147438_o(this.field_145851_c, this.field_145848_d + 1, this.field_145849_e)).setNodeType(NodeType.TAINTED);
-                ((INode)this.field_145850_b.func_147438_o(this.field_145851_c, this.field_145848_d + 1, this.field_145849_e)).setNodeModifier(NodeModifier.FADING);
-                this.field_145850_b.func_72876_a((Entity)null, this.field_145851_c + 0.5, this.field_145848_d + 1.5, this.field_145849_e + 0.5, 2.0f, true);
+                ((INode)this.worldObj.getTileEntity(this.xCoord, this.yCoord + 1, this.zCoord)).setAspects(aspects);
+                ((INode)this.worldObj.getTileEntity(this.xCoord, this.yCoord + 1, this.zCoord)).setNodeType(NodeType.TAINTED);
+                ((INode)this.worldObj.getTileEntity(this.xCoord, this.yCoord + 1, this.zCoord)).setNodeModifier(NodeModifier.FADING);
+                this.worldObj.createExplosion((Entity)null, this.xCoord + 0.5, this.yCoord + 1.5, this.zCoord + 0.5, 2.0f, true);
             }
-            this.field_145850_b.func_147471_g(this.field_145851_c, this.field_145848_d + 1, this.field_145849_e);
+            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord + 1, this.zCoord);
         }
         this.rotationAngle += this.rotationSpeed;
         this.rotationAngle %= 360.0;

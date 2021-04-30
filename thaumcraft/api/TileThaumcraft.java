@@ -7,30 +7,30 @@ import net.minecraft.network.*;
 
 public class TileThaumcraft extends TileEntity
 {
-    public void func_145839_a(final NBTTagCompound nbttagcompound) {
-        super.func_145839_a(nbttagcompound);
+    public void readFromNBT(final NBTTagCompound nbttagcompound) {
+        super.readFromNBT(nbttagcompound);
         this.readCustomNBT(nbttagcompound);
     }
     
     public void readCustomNBT(final NBTTagCompound nbttagcompound) {
     }
     
-    public void func_145841_b(final NBTTagCompound nbttagcompound) {
-        super.func_145841_b(nbttagcompound);
+    public void writeToNBT(final NBTTagCompound nbttagcompound) {
+        super.writeToNBT(nbttagcompound);
         this.writeCustomNBT(nbttagcompound);
     }
     
     public void writeCustomNBT(final NBTTagCompound nbttagcompound) {
     }
     
-    public Packet func_145844_m() {
+    public Packet getDescriptionPacket() {
         final NBTTagCompound nbttagcompound = new NBTTagCompound();
         this.writeCustomNBT(nbttagcompound);
-        return (Packet)new S35PacketUpdateTileEntity(this.field_145851_c, this.field_145848_d, this.field_145849_e, -999, nbttagcompound);
+        return (Packet)new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, -999, nbttagcompound);
     }
     
     public void onDataPacket(final NetworkManager net, final S35PacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
-        this.readCustomNBT(pkt.func_148857_g());
+        this.readCustomNBT(pkt.getNbtCompound());
     }
 }

@@ -38,17 +38,17 @@ public class ItemRenderDestabilizer implements IItemRenderer
             GL11.glTranslated(0.0, -0.1, 0.0);
         }
         final TileEntityDestabilizer ted = new TileEntityDestabilizer();
-        ted.field_145854_h = AEContent.destabilizer;
-        ted.field_145847_g = 0;
-        TileEntityRendererDispatcher.field_147556_a.func_147549_a((TileEntity)ted, 0.0, 0.0, 0.0, 0.0f);
+        ted.blockType = AEContent.destabilizer;
+        ted.blockMetadata = 0;
+        TileEntityRendererDispatcher.instance.renderTileEntityAt((TileEntity)ted, 0.0, 0.0, 0.0, 0.0f);
         GL11.glPushMatrix();
         GL11.glTranslatef(0.5f, 0.5f, 0.5f);
         GL11.glEnable(3042);
         GL11.glBlendFunc(770, 771);
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-        Minecraft.func_71410_x().field_71446_o.func_110577_a(TextureMap.field_110575_b);
-        this.rb.field_147844_c = true;
-        this.rb.func_147800_a(AEContent.destabilizer, item.func_77960_j(), 1.0f);
+        Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
+        this.rb.useInventoryTint = true;
+        this.rb.renderBlockAsItem(AEContent.destabilizer, item.getMetadata(), 1.0f);
         GL11.glPopMatrix();
         GL11.glEnable(32826);
     }

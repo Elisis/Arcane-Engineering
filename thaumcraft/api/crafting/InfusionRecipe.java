@@ -30,26 +30,26 @@ public class InfusionRecipe
         if (this.getRecipeInput() == null) {
             return false;
         }
-        if (this.research.length() > 0 && !ThaumcraftApiHelper.isResearchComplete(player.func_70005_c_(), this.research)) {
+        if (this.research.length() > 0 && !ThaumcraftApiHelper.isResearchComplete(player.getCommandSenderName(), this.research)) {
             return false;
         }
-        ItemStack i2 = central.func_77946_l();
-        if (this.getRecipeInput().func_77960_j() == 32767) {
-            i2.func_77964_b(32767);
+        ItemStack i2 = central.copy();
+        if (this.getRecipeInput().getMetadata() == 32767) {
+            i2.setMetadata(32767);
         }
         if (!areItemStacksEqual(i2, this.getRecipeInput(), true)) {
             return false;
         }
         final ArrayList<ItemStack> ii = new ArrayList<ItemStack>();
         for (final ItemStack is : input) {
-            ii.add(is.func_77946_l());
+            ii.add(is.copy());
         }
         for (final ItemStack comp : this.getComponents()) {
             boolean b = false;
             for (int a = 0; a < ii.size(); ++a) {
-                i2 = ii.get(a).func_77946_l();
-                if (comp.func_77960_j() == 32767) {
-                    i2.func_77964_b(32767);
+                i2 = ii.get(a).copy();
+                if (comp.getMetadata() == 32767) {
+                    i2.setMetadata(32767);
                 }
                 if (areItemStacksEqual(i2, comp, true)) {
                     ii.remove(a);
@@ -87,8 +87,8 @@ public class InfusionRecipe
                 }
             }
         }
-        final boolean damage = stack0.func_77960_j() == stack1.func_77960_j() || stack1.func_77960_j() == 32767;
-        return stack0.func_77973_b() == stack1.func_77973_b() && damage && stack0.field_77994_a <= stack0.func_77976_d();
+        final boolean damage = stack0.getMetadata() == stack1.getMetadata() || stack1.getMetadata() == 32767;
+        return stack0.getItem() == stack1.getItem() && damage && stack0.stackSize <= stack0.getMaxStackSize();
     }
     
     public Object getRecipeOutput() {

@@ -48,17 +48,17 @@ public class ThaumcraftApi
     }
     
     public static void addSmeltingBonus(final ItemStack in, final ItemStack out) {
-        ThaumcraftApi.smeltingBonus.put(Arrays.asList(in.func_77973_b(), in.func_77960_j()), new ItemStack(out.func_77973_b(), 0, out.func_77960_j()));
+        ThaumcraftApi.smeltingBonus.put(Arrays.asList(in.getItem(), in.getMetadata()), new ItemStack(out.getItem(), 0, out.getMetadata()));
     }
     
     public static void addSmeltingBonus(final String in, final ItemStack out) {
-        ThaumcraftApi.smeltingBonus.put(in, new ItemStack(out.func_77973_b(), 0, out.func_77960_j()));
+        ThaumcraftApi.smeltingBonus.put(in, new ItemStack(out.getItem(), 0, out.getMetadata()));
     }
     
     public static ItemStack getSmeltingBonus(final ItemStack in) {
-        ItemStack out = ThaumcraftApi.smeltingBonus.get(Arrays.asList(in.func_77973_b(), in.func_77960_j()));
+        ItemStack out = ThaumcraftApi.smeltingBonus.get(Arrays.asList(in.getItem(), in.getMetadata()));
         if (out == null) {
-            out = ThaumcraftApi.smeltingBonus.get(Arrays.asList(in.func_77973_b(), 32767));
+            out = ThaumcraftApi.smeltingBonus.get(Arrays.asList(in.getItem(), 32767));
         }
         if (out == null) {
             final String od = OreDictionary.getOreName(OreDictionary.getOreID(in));
@@ -100,7 +100,7 @@ public class ThaumcraftApi
     
     public static InfusionRecipe getInfusionRecipe(final ItemStack res) {
         for (final Object r : getCraftingRecipes()) {
-            if (r instanceof InfusionRecipe && ((InfusionRecipe)r).getRecipeOutput() instanceof ItemStack && ((ItemStack)((InfusionRecipe)r).getRecipeOutput()).func_77969_a(res)) {
+            if (r instanceof InfusionRecipe && ((InfusionRecipe)r).getRecipeOutput() instanceof ItemStack && ((ItemStack)((InfusionRecipe)r).getRecipeOutput()).isItemEqual(res)) {
                 return (InfusionRecipe)r;
             }
         }
@@ -115,7 +115,7 @@ public class ThaumcraftApi
     
     public static CrucibleRecipe getCrucibleRecipe(final ItemStack stack) {
         for (final Object r : getCraftingRecipes()) {
-            if (r instanceof CrucibleRecipe && ((CrucibleRecipe)r).getRecipeOutput().func_77969_a(stack)) {
+            if (r instanceof CrucibleRecipe && ((CrucibleRecipe)r).getRecipeOutput().isItemEqual(stack)) {
                 return (CrucibleRecipe)r;
             }
         }
@@ -132,7 +132,7 @@ public class ThaumcraftApi
     }
     
     public static Object[] getCraftingRecipeKey(final EntityPlayer player, final ItemStack stack) {
-        final int[] key = { Item.func_150891_b(stack.func_77973_b()), stack.func_77960_j() };
+        final int[] key = { Item.getIdFromItem(stack.getItem()), stack.getMetadata() };
         if (!ThaumcraftApi.keyCache.containsKey(key)) {
             for (final ResearchCategoryList rcl : ResearchCategories.researchCategories.values()) {
                 for (final ResearchItem ri : rcl.research.values()) {
@@ -145,17 +145,17 @@ public class ThaumcraftApi
                             final CrucibleRecipe[] array;
                             final CrucibleRecipe[] crs = array = (CrucibleRecipe[])page.recipe;
                             for (final CrucibleRecipe cr : array) {
-                                if (cr.getRecipeOutput().func_77969_a(stack)) {
+                                if (cr.getRecipeOutput().isItemEqual(stack)) {
                                     ThaumcraftApi.keyCache.put(key, new Object[] { ri.key, a });
-                                    if (ThaumcraftApiHelper.isResearchComplete(player.func_70005_c_(), ri.key)) {
+                                    if (ThaumcraftApiHelper.isResearchComplete(player.getCommandSenderName(), ri.key)) {
                                         return new Object[] { ri.key, a };
                                     }
                                 }
                             }
                         }
-                        else if (page.recipeOutput != null && stack != null && page.recipeOutput.func_77969_a(stack)) {
+                        else if (page.recipeOutput != null && stack != null && page.recipeOutput.isItemEqual(stack)) {
                             ThaumcraftApi.keyCache.put(key, new Object[] { ri.key, a });
-                            if (ThaumcraftApiHelper.isResearchComplete(player.func_70005_c_(), ri.key)) {
+                            if (ThaumcraftApiHelper.isResearchComplete(player.getCommandSenderName(), ri.key)) {
                                 return new Object[] { ri.key, a };
                             }
                             return null;
@@ -169,7 +169,7 @@ public class ThaumcraftApi
         if (ThaumcraftApi.keyCache.get(key) == null) {
             return null;
         }
-        if (ThaumcraftApiHelper.isResearchComplete(player.func_70005_c_(), (String)ThaumcraftApi.keyCache.get(key)[0])) {
+        if (ThaumcraftApiHelper.isResearchComplete(player.getCommandSenderName(), (String)ThaumcraftApi.keyCache.get(key)[0])) {
             return ThaumcraftApi.keyCache.get(key);
         }
         return null;
@@ -197,7 +197,7 @@ public class ThaumcraftApi
             aspects = new AspectList();
         }
         try {
-            ThaumcraftApi.objectTags.put(Arrays.asList(item.func_77973_b(), item.func_77960_j()), aspects);
+            ThaumcraftApi.objectTags.put(Arrays.asList(item.getItem(), item.getMetadata()), aspects);
         }
         catch (Exception ex) {}
     }
@@ -207,9 +207,9 @@ public class ThaumcraftApi
             aspects = new AspectList();
         }
         try {
-            ThaumcraftApi.objectTags.put(Arrays.asList(item.func_77973_b(), meta[0]), aspects);
+            ThaumcraftApi.objectTags.put(Arrays.asList(item.getItem(), meta[0]), aspects);
             for (final int m : meta) {
-                ThaumcraftApi.groupedObjectTags.put(Arrays.asList(item.func_77973_b(), m), meta);
+                ThaumcraftApi.groupedObjectTags.put(Arrays.asList(item.getItem(), m), meta);
             }
         }
         catch (Exception ex) {}
@@ -223,7 +223,7 @@ public class ThaumcraftApi
         if (ores != null && ores.size() > 0) {
             for (final ItemStack ore : ores) {
                 try {
-                    ThaumcraftApi.objectTags.put(Arrays.asList(ore.func_77973_b(), ore.func_77960_j()), aspects);
+                    ThaumcraftApi.objectTags.put(Arrays.asList(ore.getItem(), ore.getMetadata()), aspects);
                 }
                 catch (Exception ex) {}
             }
@@ -231,8 +231,8 @@ public class ThaumcraftApi
     }
     
     public static void registerComplexObjectTag(final ItemStack item, final AspectList aspects) {
-        if (!exists(item.func_77973_b(), item.func_77960_j())) {
-            final AspectList tmp = ThaumcraftApiHelper.generateTags(item.func_77973_b(), item.func_77960_j());
+        if (!exists(item.getItem(), item.getMetadata())) {
+            final AspectList tmp = ThaumcraftApiHelper.generateTags(item.getItem(), item.getMetadata());
             if (tmp != null && tmp.size() > 0) {
                 for (final Aspect tag : tmp.getAspects()) {
                     aspects.add(tag, tmp.getAmount(tag));
@@ -250,7 +250,7 @@ public class ThaumcraftApi
     }
     
     public static void addWarpToItem(final ItemStack craftresult, final int amount) {
-        ThaumcraftApi.warpMap.put(Arrays.asList(craftresult.func_77973_b(), craftresult.func_77960_j()), amount);
+        ThaumcraftApi.warpMap.put(Arrays.asList(craftresult.getItem(), craftresult.getMetadata()), amount);
     }
     
     public static void addWarpToResearch(final String research, final int amount) {
@@ -261,8 +261,8 @@ public class ThaumcraftApi
         if (in == null) {
             return 0;
         }
-        if (in instanceof ItemStack && ThaumcraftApi.warpMap.containsKey(Arrays.asList(((ItemStack)in).func_77973_b(), ((ItemStack)in).func_77960_j()))) {
-            return ThaumcraftApi.warpMap.get(Arrays.asList(((ItemStack)in).func_77973_b(), ((ItemStack)in).func_77960_j()));
+        if (in instanceof ItemStack && ThaumcraftApi.warpMap.containsKey(Arrays.asList(((ItemStack)in).getItem(), ((ItemStack)in).getMetadata()))) {
+            return ThaumcraftApi.warpMap.get(Arrays.asList(((ItemStack)in).getItem(), ((ItemStack)in).getMetadata()));
         }
         if (in instanceof String && ThaumcraftApi.warpMap.containsKey(in)) {
             return ThaumcraftApi.warpMap.get(in);

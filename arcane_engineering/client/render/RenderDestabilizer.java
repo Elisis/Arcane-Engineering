@@ -19,12 +19,12 @@ public class RenderDestabilizer extends TileEntitySpecialRenderer
         this.textureOpen = new ResourceLocation("arcane_engineering", "textures/models/destabilizer_open.png");
     }
     
-    public void func_147500_a(final TileEntity te, final double x, final double y, final double z, final float scale) {
+    public void renderTileEntityAt(final TileEntity te, final double x, final double y, final double z, final float scale) {
         if (((TileEntityDestabilizer)te).open) {
-            this.func_147499_a(this.textureOpen);
+            this.bindTexture(this.textureOpen);
         }
         else {
-            this.func_147499_a(this.texture);
+            this.bindTexture(this.texture);
         }
         GL11.glPushMatrix();
         GL11.glTranslatef((float)x + 0.5f, (float)y + 0.5f, (float)z + 0.5f);

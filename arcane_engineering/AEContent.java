@@ -45,8 +45,8 @@ public class AEContent
     }
     
     public static void initCraftingRecipes() {
-        addOredictRecipe(new ItemStack(AEContent.impulseBoots, 1), "IFI", "BFB", "C C", 'I', "ingotAluminium", 'F', new ItemStack((Item)IEContent.itemMaterial, 1, 4), 'B', Items.field_151133_ar, 'C', new ItemStack((Item)IEContent.itemMaterial, 1, 12));
-        addOredictRecipe(new ItemStack(AEContent.impulseBoots, 1), "IFI", "BFB", "C C", 'I', "ingotAluminum", 'F', new ItemStack((Item)IEContent.itemMaterial, 1, 4), 'B', Items.field_151133_ar, 'C', new ItemStack((Item)IEContent.itemMaterial, 1, 12));
+        addOredictRecipe(new ItemStack(AEContent.impulseBoots, 1), "IFI", "BFB", "C C", 'I', "ingotAluminium", 'F', new ItemStack((Item)IEContent.itemMaterial, 1, 4), 'B', Items.bucket, 'C', new ItemStack((Item)IEContent.itemMaterial, 1, 12));
+        addOredictRecipe(new ItemStack(AEContent.impulseBoots, 1), "IFI", "BFB", "C C", 'I', "ingotAluminum", 'F', new ItemStack((Item)IEContent.itemMaterial, 1, 4), 'B', Items.bucket, 'C', new ItemStack((Item)IEContent.itemMaterial, 1, 12));
         final UpgradeableWandRecipe wr = new UpgradeableWandRecipe();
         ThaumcraftApi.getCraftingRecipes().add(wr);
     }

@@ -1,0 +1,9 @@
+// Add your dependencies here
+
+dependencies {
+
+	compile 'thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev'
+	//compile 'blusunrize:ImmersiveEngineering:1.7.10-0.7.7:dev'
+	compile files('ImmersiveEngineering-0.7.7-deobf.jar') //Can't find the maven :(((
+	compile 'com.github.GTNewHorizons:Baubles:1.0.1.14:dev'
+}
